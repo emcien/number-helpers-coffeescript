@@ -17,8 +17,16 @@ class @NumberHelpers
     #Not passing in a number
     return Number.NaN unless typeof float is 'number'
     
+    #Capture the integer value
     integer  = parseInt(float)
+    
+    #Remove separator if percision is zero
+    _separator = '' if _precision is 0
+    
+    #Pad Percision since using .substring
+    _precision = _precision + 2
+    
     decimal  = (float - integer).toString()
-    decimal  = decimal.substring(2,4)
+    decimal    = decimal.substring(2,_precision)
     
     return "#{_unit}#{integer}#{_separator}#{decimal}"

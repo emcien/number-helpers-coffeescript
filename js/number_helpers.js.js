@@ -22,8 +22,12 @@
         return Number.NaN;
       }
       integer = parseInt(float);
+      if (_precision === 0) {
+        _separator = '';
+      }
+      _precision = _precision + 2;
       decimal = (float - integer).toString();
-      decimal = decimal.substring(2, 4);
+      decimal = decimal.substring(2, _precision);
       return "" + _unit + integer + _separator + decimal;
     };
 
