@@ -1,32 +1,48 @@
 class @NumberHelpers
-  # :locale - Sets the locale to be used for formatting (defaults to current locale).
-  # :precision - Sets the level of precision (defaults to 2).
-  # :unit - Sets the denomination of the currency (defaults to "$").
-  # :separator - Sets the separator between the units (defaults to ".").
-  # :delimiter - Sets the thousands delimiter (defaults to ",").
   @number_to_currency = (float, opts={}) ->
-    _locale     = opts.locale ? 'en'
+    # _precision - Sets the level of precision (defaults to 2).
+    # _unit - Sets the denomination of the currency (defaults to "$").
+    # _separator - Sets the separator between the units (defaults to ".").
+    # _delimiter - Sets the thousands delimiter (defaults to ",").
     _precision  = opts.precision ? 2
     _unit       = opts.unit ? '$'
     _separator  = opts.separator ? '.'
+    _delimiter  = opts.delimiter ? ','  
+    
+    number  = float.toString().split('.')
+    integer = number[0] 
+    decimal = number[1]
+    
+    # Pad to _precision
+    decimal = parseFloat("0.#{decimal}").toFixed(_precision)
+    decimal = decimal.toString().split('.')
+    decimal = decimal[1] ? ''
+        
+    # Remove separator if no decimal
+    _separator = '' unless decimal
+    
+    # Non-number values return zero precision
+    _separator = decimal = '' if isNaN(integer)    
+    
+    integer = NumberHelpers.number_with_delimiter(integer, {delimiter: _delimiter})
+          
+    return "#{_unit}#{integer}#{_separator}#{decimal}"
+  
+  @number_with_delimiter = (float, opts={}) ->
+    # _separator - Sets the separator between the units (defaults to ".").
+    # _delimiter - Sets the thousands delimiter (defaults to ",").
+    _separator  = opts.separator ? '.'
     _delimiter  = opts.delimiter ? ','
     
-    #Convert to Number is passed in as string
-    float = parseFloat(float, 10) if typeof float is 'string'
+    number  = float.toString().split(".")
+    integer = number[0]
+    decimal = number[1] ? ''
     
-    #Not passing in a number
-    return Number.NaN unless typeof float is 'number'
+    # Remove separator if no decimal
+    _separator = '' unless decimal
     
-    #Capture the integer value
-    integer  = parseInt(float)
+    rgx = /(\d+)(\d{3})/
+    integer = integer .replace(rgx, "$1" + _delimiter + "$2") while rgx.test(integer ) if _delimiter
     
-    #Remove separator if percision is zero
-    _separator = '' if _precision is 0
+    return "#{integer}#{_separator}#{decimal}"
     
-    #Pad Percision since using .substring
-    _precision = _precision + 2
-    
-    decimal  = (float - integer).toString()
-    decimal    = decimal.substring(2,_precision)
-    
-    return "#{_unit}#{integer}#{_separator}#{decimal}"
