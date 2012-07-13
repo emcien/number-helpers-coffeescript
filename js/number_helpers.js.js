@@ -54,6 +54,67 @@
       return "" + integer + _separator + decimal;
     };
 
+    NumberHelpers.number_with_precision = function(float, opts) {
+      var decimal, integer, multiple, number, rounded, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _separator, _significant, _strip_insignificant_zeros;
+      if (opts == null) {
+        opts = {};
+      }
+      _precision = (_ref = opts.precision) != null ? _ref : 3;
+      _delimiter = (_ref1 = opts.delimiter) != null ? _ref1 : ',';
+      _separator = (_ref2 = opts.separator) != null ? _ref2 : '.';
+      _significant = (_ref3 = opts.significant) != null ? _ref3 : false;
+      _strip_insignificant_zeros = (_ref4 = opts.strip_insignificant_zeros) != null ? _ref4 : false;
+      multiple = Math.pow(10, _precision);
+      rounded = Math.round(float * multiple) / multiple;
+      number = rounded.toString().split('.');
+      integer = number[0];
+      decimal = (_ref5 = number[1]) != null ? _ref5 : '';
+      decimal = parseFloat("0." + decimal).toFixed(_precision);
+      decimal = decimal.toString().split('.');
+      decimal = (_ref6 = decimal[1]) != null ? _ref6 : '';
+      if (_significant && rounded.toString().length > _precision) {
+        rounded = ("" + integer + "." + decimal) * 1;
+        rounded = rounded.toPrecision(_precision) * 1;
+        number = rounded.toString().split('.');
+        integer = number[0];
+        decimal = (_ref7 = number[1]) != null ? _ref7 : '';
+      }
+      integer = NumberHelpers.number_with_delimiter(integer, {
+        delimiter: _delimiter
+      });
+      if (_strip_insignificant_zeros) {
+        decimal = '';
+      }
+      if (!decimal) {
+        _separator = '';
+      }
+      return "" + integer + _separator + decimal;
+    };
+
+    NumberHelpers.number_to_human = function(float, opts) {
+      var delimited_number, precise_number, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _separator, _significant;
+      if (opts == null) {
+        opts = {};
+      }
+      _precision = (_ref = opts.precision) != null ? _ref : 3;
+      _separator = (_ref1 = opts.separator) != null ? _ref1 : '.';
+      _significant = (_ref2 = opts.significant) != null ? _ref2 : false;
+      _delimiter = (_ref3 = opts.delimiter) != null ? _ref3 : ',';
+      if (Math.abs(float) < 1000) {
+        precise_number = NumberHelpers.number_with_precision(float, {
+          precision: _precision
+        });
+        console.log(precise_number);
+        delimited_number = NumberHelpers.number_with_delimiter(precise_number, {
+          delimiter: _delimiter,
+          separator: _separator
+        });
+        return "" + delimited_number;
+      } else {
+        return 'Error';
+      }
+    };
+
     return NumberHelpers;
 
   })();
