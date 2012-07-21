@@ -96,7 +96,7 @@
     };
 
     NumberHelpers.number_to_human = function(float, opts) {
-      var abs_float, number, precise, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _ref4, _separator, _significant, _strip_insignificant_zeros;
+      var abs_float, denom, label, number, precise, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _ref4, _separator, _significant, _strip_insignificant_zeros;
       if (opts == null) {
         opts = {};
       }
@@ -107,65 +107,36 @@
       _strip_insignificant_zeros = (_ref4 = opts.strip_insignificant_zeros) != null ? _ref4 : false;
       abs_float = Math.abs(float);
       if (abs_float < Math.pow(10, 3)) {
-        precise = NumberHelpers.number_with_precision(float, {
-          precision: _precision,
-          strip_insignificant_zeros: true,
-          delimiter: _delimiter,
-          separator: _separator
-        });
-        return "" + precise;
+        denom = 1;
+        label = false;
       } else if (abs_float >= Math.pow(10, 3) && abs_float < Math.pow(10, 6)) {
-        number = float / Math.pow(10, 3);
-        precise = NumberHelpers.number_with_precision(number, {
-          precision: _precision,
-          significant: _significant,
-          delimiter: _delimiter,
-          separator: _separator,
-          strip_insignificant_zeros: _strip_insignificant_zeros
-        });
-        return "" + precise + " Thousand";
+        denom = Math.pow(10, 3);
+        label = "Thousand";
       } else if (abs_float >= Math.pow(10, 6) && abs_float < Math.pow(10, 9)) {
-        number = float / Math.pow(10, 6);
-        precise = NumberHelpers.number_with_precision(number, {
-          precision: _precision,
-          significant: _significant,
-          delimiter: _delimiter,
-          separator: _separator,
-          strip_insignificant_zeros: _strip_insignificant_zeros
-        });
-        return "" + precise + " Million";
+        denom = Math.pow(10, 6);
+        label = "Million";
       } else if (abs_float >= Math.pow(10, 9) && abs_float < Math.pow(10, 12)) {
-        number = float / Math.pow(10, 9);
-        precise = NumberHelpers.number_with_precision(number, {
-          precision: _precision,
-          significant: _significant,
-          delimiter: _delimiter,
-          separator: _separator,
-          strip_insignificant_zeros: _strip_insignificant_zeros
-        });
-        return "" + precise + " Billion";
+        denom = Math.pow(10, 9);
+        label = "Billion";
       } else if (abs_float >= Math.pow(10, 12) && abs_float < Math.pow(10, 15)) {
-        number = float / Math.pow(10, 12);
-        precise = NumberHelpers.number_with_precision(number, {
-          precision: _precision,
-          significant: _significant,
-          delimiter: _delimiter,
-          separator: _separator,
-          strip_insignificant_zeros: _strip_insignificant_zeros
-        });
-        return "" + precise + " Trillion";
+        denom = Math.pow(10, 12);
+        label = "Trillion";
       } else if (abs_float >= Math.pow(10, 15)) {
-        number = float / Math.pow(10, 15);
-        precise = NumberHelpers.number_with_precision(number, {
-          precision: _precision,
-          significant: _significant,
-          delimiter: '',
-          separator: _separator,
-          strip_insignificant_zeros: _strip_insignificant_zeros
-        });
-        return "" + precise + " Quadrillion";
+        denom = Math.pow(10, 15);
+        label = "Quadrillion";
+      }
+      number = float / denom;
+      precise = NumberHelpers.number_with_precision(number, {
+        precision: _precision,
+        significant: _significant,
+        delimiter: label === 'Quadrillion' ? '' : _delimiter,
+        separator: _separator,
+        strip_insignificant_zeros: !label ? true : _strip_insignificant_zeros
+      });
+      if (label) {
+        return "" + precise + " " + label;
       } else {
-        return 'Error';
+        return "" + precise;
       }
     };
 

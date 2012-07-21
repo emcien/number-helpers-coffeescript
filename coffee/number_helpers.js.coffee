@@ -95,42 +95,47 @@ class @NumberHelpers
     return "#{integer}#{_separator}#{decimal}"
   
   @number_to_human = (float, opts={}) ->
-    # _precision - Sets the precision of the number (defaults to 3).
-    # _separator - Sets the separator between the fractional and integer digits (defaults ".")
-    # _significant - If true, precision will be the # of significant_digits. If false, the # of fractional digits (defaults to +false+).
-    # _delimiter - Sets the thousands delimiter (defaults to "").
-    # _strip_insignificant_zeros - If true removes insignificant zeros after the decimal separator (defaults to true)
     _precision    = opts.precision ? 3
     _separator    = opts.separator ? '.'
     _significant  = opts.significant ? true
-    _delimiter  = opts.delimiter ? ','
+    _delimiter    = opts.delimiter ? ','
     _strip_insignificant_zeros = opts.strip_insignificant_zeros ? false
     
+    # Remove the sign of the number for easier comparision
     abs_float = Math.abs(float)
     
+    # Less than Thousand does not need text or a insignifiant digits
     if abs_float < Math.pow(10, 3)
-      precise = NumberHelpers.number_with_precision(float, {precision: _precision, strip_insignificant_zeros: true, delimiter: _delimiter, separator: _separator})
-      return "#{precise}"
+      denom = 1
+      label = false
     else if abs_float >= Math.pow(10, 3) and abs_float < Math.pow(10, 6)
-      number  = float / Math.pow(10, 3)
-      precise = NumberHelpers.number_with_precision(number, {precision: _precision, significant: _significant, delimiter: _delimiter, separator: _separator, strip_insignificant_zeros: _strip_insignificant_zeros})
-      return "#{precise} Thousand"
+      denom = Math.pow(10, 3)
+      label = "Thousand"
     else if abs_float >= Math.pow(10, 6) and abs_float < Math.pow(10, 9)
-      number  = float / Math.pow(10, 6)
-      precise = NumberHelpers.number_with_precision(number, {precision: _precision, significant: _significant, delimiter: _delimiter, separator: _separator, strip_insignificant_zeros: _strip_insignificant_zeros})
-      return "#{precise} Million"
+      denom = Math.pow(10, 6)
+      label = "Million"
     else if abs_float >= Math.pow(10, 9) and abs_float < Math.pow(10, 12)
-      number  = float / Math.pow(10, 9)
-      precise = NumberHelpers.number_with_precision(number, {precision: _precision, significant: _significant, delimiter: _delimiter, separator: _separator, strip_insignificant_zeros: _strip_insignificant_zeros})
-      return "#{precise} Billion"
+      denom = Math.pow(10, 9)
+      label = "Billion"
     else if abs_float >= Math.pow(10, 12) and abs_float < Math.pow(10, 15)
-      number  = float / Math.pow(10, 12)
-      precise = NumberHelpers.number_with_precision(number, {precision: _precision, significant: _significant, delimiter: _delimiter, separator: _separator, strip_insignificant_zeros: _strip_insignificant_zeros})
-      return "#{precise} Trillion"
+      denom = Math.pow(10, 12)
+      label = "Trillion"
     else if abs_float >= Math.pow(10, 15)
-      number  = float / Math.pow(10, 15)
-      precise = NumberHelpers.number_with_precision(number, {precision: _precision, significant: _significant, delimiter: '', separator: _separator, strip_insignificant_zeros: _strip_insignificant_zeros})
-      return "#{precise} Quadrillion"
-    else
-      return 'Error'
+      denom = Math.pow(10, 15)
+      label = "Quadrillion"
     
+    # Process the number into a presentable format
+    number  = float / denom
+    precise = NumberHelpers.number_with_precision(number,
+      precision:                  _precision
+      significant:                _significant
+      delimiter:                  if label is 'Quadrillion' then '' else _delimiter
+      separator:                  _separator
+      strip_insignificant_zeros:  unless label then true else _strip_insignificant_zeros
+    )
+    
+    #No label needed for less than thousand
+    if label
+      return "#{precise} #{label}"
+    else 
+      return "#{precise}"
