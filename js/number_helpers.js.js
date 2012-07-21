@@ -96,7 +96,7 @@
     };
 
     NumberHelpers.number_to_human = function(float, opts) {
-      var abs_float, number, precise, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _separator, _significant;
+      var abs_float, number, precise, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _ref4, _separator, _significant, _strip_insignificant_zeros;
       if (opts == null) {
         opts = {};
       }
@@ -104,6 +104,7 @@
       _separator = (_ref1 = opts.separator) != null ? _ref1 : '.';
       _significant = (_ref2 = opts.significant) != null ? _ref2 : true;
       _delimiter = (_ref3 = opts.delimiter) != null ? _ref3 : ',';
+      _strip_insignificant_zeros = (_ref4 = opts.strip_insignificant_zeros) != null ? _ref4 : false;
       abs_float = Math.abs(float);
       if (abs_float < Math.pow(10, 3)) {
         precise = NumberHelpers.number_with_precision(float, {
@@ -119,34 +120,38 @@
           precision: _precision,
           significant: _significant,
           delimiter: _delimiter,
-          separator: _separator
+          separator: _separator,
+          strip_insignificant_zeros: _strip_insignificant_zeros
         });
         return "" + precise + " Thousand";
-      } else if (abs_float >= Math.pow(10, 6) && abs_float < Math.pow(10, 8)) {
+      } else if (abs_float >= Math.pow(10, 6) && abs_float < Math.pow(10, 9)) {
         number = float / Math.pow(10, 6);
         precise = NumberHelpers.number_with_precision(number, {
           precision: _precision,
           significant: _significant,
           delimiter: _delimiter,
-          separator: _separator
+          separator: _separator,
+          strip_insignificant_zeros: _strip_insignificant_zeros
         });
         return "" + precise + " Million";
-      } else if (abs_float >= Math.pow(10, 9) && abs_float < Math.pow(10, 11)) {
+      } else if (abs_float >= Math.pow(10, 9) && abs_float < Math.pow(10, 12)) {
         number = float / Math.pow(10, 9);
         precise = NumberHelpers.number_with_precision(number, {
           precision: _precision,
           significant: _significant,
           delimiter: _delimiter,
-          separator: _separator
+          separator: _separator,
+          strip_insignificant_zeros: _strip_insignificant_zeros
         });
         return "" + precise + " Billion";
-      } else if (abs_float >= Math.pow(10, 12) && abs_float < Math.pow(10, 14)) {
+      } else if (abs_float >= Math.pow(10, 12) && abs_float < Math.pow(10, 15)) {
         number = float / Math.pow(10, 12);
         precise = NumberHelpers.number_with_precision(number, {
           precision: _precision,
           significant: _significant,
           delimiter: _delimiter,
-          separator: _separator
+          separator: _separator,
+          strip_insignificant_zeros: _strip_insignificant_zeros
         });
         return "" + precise + " Trillion";
       } else if (abs_float >= Math.pow(10, 15)) {
@@ -155,7 +160,8 @@
           precision: _precision,
           significant: _significant,
           delimiter: '',
-          separator: _separator
+          separator: _separator,
+          strip_insignificant_zeros: _strip_insignificant_zeros
         });
         return "" + precise + " Quadrillion";
       } else {

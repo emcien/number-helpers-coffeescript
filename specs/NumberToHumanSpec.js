@@ -1,6 +1,5 @@
 // Unsignificant zeros after the decimal separator are stripped out by default (set :strip_insignificant_zeros to false to change that):
 // number_to_human(12345012345, :significant_digits => 6)       # => "12.345 Billion"
-// number_to_human(500000000, :precision => 5)                  # => "500 Million"
 
 describe("Number To Human", function() {
   it('Hundreds', function() {
@@ -55,5 +54,12 @@ describe("Number To Human", function() {
     var out = NumberHelpers.number_to_human(1234567, {precision: 1, significant: false, separator: ','});
     expect(out).toBe('1,2 Million');
   }); 
-  
+  it('500 Million', function() {
+    var out = NumberHelpers.number_to_human(500000000, {precision: 5, strip_insignificant_zeros: true});
+    expect(out).toBe('500 Million');
+  }); 
+  it('500 Million', function() {
+    var out = NumberHelpers.number_to_human(500000000, {precision: 5, strip_insignificant_zeros: true});
+    expect(out).toBe('500 Million');
+  });
 });

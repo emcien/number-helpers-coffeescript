@@ -104,6 +104,7 @@ class @NumberHelpers
     _separator    = opts.separator ? '.'
     _significant  = opts.significant ? true
     _delimiter  = opts.delimiter ? ','
+    _strip_insignificant_zeros = opts.strip_insignificant_zeros ? false
     
     abs_float = Math.abs(float)
     
@@ -112,23 +113,23 @@ class @NumberHelpers
       return "#{precise}"
     else if abs_float >= Math.pow(10, 3) and abs_float < Math.pow(10, 6)
       number  = float / Math.pow(10, 3)
-      precise = NumberHelpers.number_with_precision(number, {precision: _precision, significant: _significant, delimiter: _delimiter, separator: _separator})
+      precise = NumberHelpers.number_with_precision(number, {precision: _precision, significant: _significant, delimiter: _delimiter, separator: _separator, strip_insignificant_zeros: _strip_insignificant_zeros})
       return "#{precise} Thousand"
-    else if abs_float >= Math.pow(10, 6) and abs_float < Math.pow(10, 8)
+    else if abs_float >= Math.pow(10, 6) and abs_float < Math.pow(10, 9)
       number  = float / Math.pow(10, 6)
-      precise = NumberHelpers.number_with_precision(number, {precision: _precision, significant: _significant, delimiter: _delimiter, separator: _separator})
+      precise = NumberHelpers.number_with_precision(number, {precision: _precision, significant: _significant, delimiter: _delimiter, separator: _separator, strip_insignificant_zeros: _strip_insignificant_zeros})
       return "#{precise} Million"
-    else if abs_float >= Math.pow(10, 9) and abs_float < Math.pow(10, 11)
+    else if abs_float >= Math.pow(10, 9) and abs_float < Math.pow(10, 12)
       number  = float / Math.pow(10, 9)
-      precise = NumberHelpers.number_with_precision(number, {precision: _precision, significant: _significant, delimiter: _delimiter, separator: _separator})
+      precise = NumberHelpers.number_with_precision(number, {precision: _precision, significant: _significant, delimiter: _delimiter, separator: _separator, strip_insignificant_zeros: _strip_insignificant_zeros})
       return "#{precise} Billion"
-    else if abs_float >= Math.pow(10, 12) and abs_float < Math.pow(10, 14)
+    else if abs_float >= Math.pow(10, 12) and abs_float < Math.pow(10, 15)
       number  = float / Math.pow(10, 12)
-      precise = NumberHelpers.number_with_precision(number, {precision: _precision, significant: _significant, delimiter: _delimiter, separator: _separator})
+      precise = NumberHelpers.number_with_precision(number, {precision: _precision, significant: _significant, delimiter: _delimiter, separator: _separator, strip_insignificant_zeros: _strip_insignificant_zeros})
       return "#{precise} Trillion"
     else if abs_float >= Math.pow(10, 15)
       number  = float / Math.pow(10, 15)
-      precise = NumberHelpers.number_with_precision(number, {precision: _precision, significant: _significant, delimiter: '', separator: _separator})
+      precise = NumberHelpers.number_with_precision(number, {precision: _precision, significant: _significant, delimiter: '', separator: _separator, strip_insignificant_zeros: _strip_insignificant_zeros})
       return "#{precise} Quadrillion"
     else
       return 'Error'
