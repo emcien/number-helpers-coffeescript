@@ -74,7 +74,11 @@
       decimal = (_ref6 = decimal[1]) != null ? _ref6 : '';
       if (_significant && rounded.toString().length > _precision) {
         rounded = ("" + integer + "." + decimal) * 1;
-        rounded = rounded.toPrecision(_precision) * 1;
+        if (_precision === 1 || integer.length > _precision) {
+          rounded = rounded.toPrecision(_precision) * 1;
+        } else {
+          rounded = rounded.toString().substr(0, _precision + 1);
+        }
         number = rounded.toString().split('.');
         integer = number[0];
         decimal = (_ref7 = number[1]) != null ? _ref7 : '';
@@ -92,24 +96,68 @@
     };
 
     NumberHelpers.number_to_human = function(float, opts) {
-      var delimited_number, precise_number, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _separator, _significant;
+      var abs_float, number, precise, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _separator, _significant;
       if (opts == null) {
         opts = {};
       }
       _precision = (_ref = opts.precision) != null ? _ref : 3;
       _separator = (_ref1 = opts.separator) != null ? _ref1 : '.';
-      _significant = (_ref2 = opts.significant) != null ? _ref2 : false;
+      _significant = (_ref2 = opts.significant) != null ? _ref2 : true;
       _delimiter = (_ref3 = opts.delimiter) != null ? _ref3 : ',';
-      if (Math.abs(float) < 1000) {
-        precise_number = NumberHelpers.number_with_precision(float, {
-          precision: _precision
-        });
-        console.log(precise_number);
-        delimited_number = NumberHelpers.number_with_delimiter(precise_number, {
+      abs_float = Math.abs(float);
+      if (abs_float < Math.pow(10, 3)) {
+        precise = NumberHelpers.number_with_precision(float, {
+          precision: _precision,
+          strip_insignificant_zeros: true,
           delimiter: _delimiter,
           separator: _separator
         });
-        return "" + delimited_number;
+        return "" + precise;
+      } else if (abs_float >= Math.pow(10, 3) && abs_float < Math.pow(10, 6)) {
+        number = float / Math.pow(10, 3);
+        precise = NumberHelpers.number_with_precision(number, {
+          precision: _precision,
+          significant: _significant,
+          delimiter: _delimiter,
+          separator: _separator
+        });
+        return "" + precise + " Thousand";
+      } else if (abs_float >= Math.pow(10, 6) && abs_float < Math.pow(10, 8)) {
+        number = float / Math.pow(10, 6);
+        precise = NumberHelpers.number_with_precision(number, {
+          precision: _precision,
+          significant: _significant,
+          delimiter: _delimiter,
+          separator: _separator
+        });
+        return "" + precise + " Million";
+      } else if (abs_float >= Math.pow(10, 9) && abs_float < Math.pow(10, 11)) {
+        number = float / Math.pow(10, 9);
+        precise = NumberHelpers.number_with_precision(number, {
+          precision: _precision,
+          significant: _significant,
+          delimiter: _delimiter,
+          separator: _separator
+        });
+        return "" + precise + " Billion";
+      } else if (abs_float >= Math.pow(10, 12) && abs_float < Math.pow(10, 14)) {
+        number = float / Math.pow(10, 12);
+        precise = NumberHelpers.number_with_precision(number, {
+          precision: _precision,
+          significant: _significant,
+          delimiter: _delimiter,
+          separator: _separator
+        });
+        return "" + precise + " Trillion";
+      } else if (abs_float >= Math.pow(10, 15)) {
+        number = float / Math.pow(10, 15);
+        precise = NumberHelpers.number_with_precision(number, {
+          precision: _precision,
+          significant: _significant,
+          delimiter: '',
+          separator: _separator
+        });
+        return "" + precise + " Quadrillion";
       } else {
         return 'Error';
       }
