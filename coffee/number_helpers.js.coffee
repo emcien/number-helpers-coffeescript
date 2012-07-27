@@ -1,9 +1,5 @@
 class @NumberHelpers
   @number_to_currency = (float, opts={}) ->
-    # _precision - Sets the level of precision (defaults to 2).
-    # _unit - Sets the denomination of the currency (defaults to "$").
-    # _separator - Sets the separator between the units (defaults to ".").
-    # _delimiter - Sets the thousands delimiter (defaults to ",").
     _precision  = opts.precision ? 2
     _unit       = opts.unit ? '$'
     _separator  = opts.separator ? '.'
