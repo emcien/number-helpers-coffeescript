@@ -47,11 +47,6 @@ class @NumberHelpers
     return "#{integer}#{_separator}#{decimal}"
   
   @number_with_precision = (float, opts={}) ->
-    # _precision - Sets the precision of the number (defaults to 3).
-    # _separator - Sets the separator between the fractional and integer digits (defaults ".")
-    # _significant - If true, precision will be the # of significant_digits. If false, the # of fractional digits (defaults to +false+).
-    # _delimiter - Sets the thousands delimiter (defaults to "").
-    # _strip_insignificant_zeros - If true removes insignificant zeros after the decimal separator
     _precision    = opts.precision ? 3
     _delimiter    = opts.delimiter ? ','
     _separator    = opts.separator ? '.'
@@ -60,7 +55,7 @@ class @NumberHelpers
     
     multiple  = Math.pow(10, _precision)
     rounded   = Math.round(float * multiple) / multiple
-    
+        
     number    = rounded.toString().split('.')
     integer   = number[0] 
     decimal   = number[1] ? ''
@@ -69,25 +64,36 @@ class @NumberHelpers
     decimal = parseFloat("0.#{decimal}").toFixed(_precision) 
     decimal = decimal.toString().split('.')
     decimal = decimal[1] ? ''
-        
-    if _significant and rounded.toString().length > _precision
-      rounded = "#{integer}.#{decimal}" * 1
-      
-      # To Precision rounds the number, we do not want that when using _significant
-      if _precision is 1 or integer.length > _precision
-        rounded = rounded.toPrecision(_precision) * 1
-      else
-        rounded = rounded.toString().substr(0, _precision + 1)
-      
-      number  = rounded.toString().split('.')
-      integer = number[0] 
-      decimal = number[1] ? ''
     
+    # Reconstitute the number with correct decimal
+    number    = "#{integer}.#{decimal}" * 1
+    num_array = number.toString().split('')
+    num_lngth = num_array.length
+    
+    # Count Non-zero Digits
+    i = 0; sigs = 0
+    while i < num_lngth
+      sigs++ unless num_array[i] is '.' or num_array[i] is '0'
+      i++
+    
+    if _significant and sigs > _precision
+      
+      # toPrecision() rounds therefor need to chomp
+      if decimal.toString().length >= _precision
+        chomp   = _precision - integer.toString().length
+        decimal = decimal.toString().substr(0, chomp)
+        number  = "#{integer}.#{decimal}" * 1 
+        console.log number
+      significant = number.toPrecision(_precision) * 1
+      significant = significant.toString().split('.')
+      integer     = significant[0] 
+      decimal     = significant[1] ? ''
+      
     # Delimiter Integer
     integer = NumberHelpers.number_with_delimiter(integer, {delimiter: _delimiter})
     
-    if _strip_insignificant_zeros
-      decimal = ''
+    # Strip Insignificant Digits
+    decimal = '' if _strip_insignificant_zeros
       
     # Remove separator if no decimal
     _separator = '' unless decimal
@@ -95,10 +101,10 @@ class @NumberHelpers
     return "#{integer}#{_separator}#{decimal}"
   
   @number_to_human = (float, opts={}) ->
-    _precision    = opts.precision ? 3
-    _separator    = opts.separator ? '.'
-    _significant  = opts.significant ? true
-    _delimiter    = opts.delimiter ? ','
+    _precision    = opts.precision    ? 3
+    _separator    = opts.separator    ? '.'
+    _significant  = opts.significant  ? true
+    _delimiter    = opts.delimiter    ? ','
     _strip_insignificant_zeros = opts.strip_insignificant_zeros ? false
     
     # Remove the sign of the number for easier comparision
@@ -110,19 +116,19 @@ class @NumberHelpers
       label = false
     else if abs_float >= Math.pow(10, 3) and abs_float < Math.pow(10, 6)
       denom = Math.pow(10, 3)
-      label = "Thousand"
+      label = 'Thousand'
     else if abs_float >= Math.pow(10, 6) and abs_float < Math.pow(10, 9)
       denom = Math.pow(10, 6)
-      label = "Million"
+      label = 'Million'
     else if abs_float >= Math.pow(10, 9) and abs_float < Math.pow(10, 12)
       denom = Math.pow(10, 9)
-      label = "Billion"
+      label = 'Billion'
     else if abs_float >= Math.pow(10, 12) and abs_float < Math.pow(10, 15)
       denom = Math.pow(10, 12)
-      label = "Trillion"
+      label = 'Trillion'
     else if abs_float >= Math.pow(10, 15)
       denom = Math.pow(10, 15)
-      label = "Quadrillion"
+      label = 'Quadrillion'
     
     # Process the number into a presentable format
     number  = float / denom
@@ -138,4 +144,44 @@ class @NumberHelpers
     if label
       return "#{precise} #{label}"
     else 
-      return "#{precise}"
+      return precise
+  
+  @number_to_human_size = (float, opts={}) ->
+    _precision    = opts.precision    ? 3
+    _separator    = opts.separator    ? '.'
+    _significant  = opts.significant  ? true
+    _delimiter    = opts.delimiter    ? ','
+    _strip_insignificant_zeros = opts.strip_insignificant_zeros ? false
+    
+    # Remove the sign of the number for easier comparision
+    abs_float = Math.abs(float)
+    
+    # Less than Thousand does not need text or a insignifiant digits
+    if abs_float < Math.pow(10, 3)
+      denom = 1
+      label = 'Bytes'
+    else if abs_float >= Math.pow(10, 3) and abs_float < Math.pow(10, 6)
+      denom = Math.pow(10, 3)
+      label = 'KB'
+    else if abs_float >= Math.pow(10, 6) and abs_float < Math.pow(10, 9)
+      denom = Math.pow(10, 6)
+      label = 'MB'
+    else if abs_float >= Math.pow(10, 9) and abs_float < Math.pow(10, 12)
+      denom = Math.pow(10, 9)
+      label = 'GB'
+    else if abs_float >= Math.pow(10, 12) and abs_float < Math.pow(10, 15)
+      denom = Math.pow(10, 12)
+      label = 'TB'
+    
+    # Process the number into a presentable format
+    number  = float / denom
+    
+    precise = NumberHelpers.number_with_precision(number,
+      precision:                  _precision
+      significant:                _significant
+      delimiter:                  _delimiter
+      separator:                  _separator
+      strip_insignificant_zeros:  if label is 'Bytes' then true else _strip_insignificant_zeros
+    )
+    
+    return "#{precise} #{label}"

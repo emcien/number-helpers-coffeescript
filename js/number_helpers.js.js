@@ -55,7 +55,7 @@
     };
 
     NumberHelpers.number_with_precision = function(float, opts) {
-      var decimal, integer, multiple, number, rounded, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _separator, _significant, _strip_insignificant_zeros;
+      var chomp, decimal, i, integer, multiple, num_array, num_lngth, number, rounded, significant, sigs, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _separator, _significant, _strip_insignificant_zeros;
       if (opts == null) {
         opts = {};
       }
@@ -72,16 +72,28 @@
       decimal = parseFloat("0." + decimal).toFixed(_precision);
       decimal = decimal.toString().split('.');
       decimal = (_ref6 = decimal[1]) != null ? _ref6 : '';
-      if (_significant && rounded.toString().length > _precision) {
-        rounded = ("" + integer + "." + decimal) * 1;
-        if (_precision === 1 || integer.length > _precision) {
-          rounded = rounded.toPrecision(_precision) * 1;
-        } else {
-          rounded = rounded.toString().substr(0, _precision + 1);
+      number = ("" + integer + "." + decimal) * 1;
+      num_array = number.toString().split('');
+      num_lngth = num_array.length;
+      i = 0;
+      sigs = 0;
+      while (i < num_lngth) {
+        if (!(num_array[i] === '.' || num_array[i] === '0')) {
+          sigs++;
         }
-        number = rounded.toString().split('.');
-        integer = number[0];
-        decimal = (_ref7 = number[1]) != null ? _ref7 : '';
+        i++;
+      }
+      if (_significant && sigs > _precision) {
+        if (decimal.toString().length >= _precision) {
+          chomp = _precision - integer.toString().length;
+          decimal = decimal.toString().substr(0, chomp);
+          number = ("" + integer + "." + decimal) * 1;
+          console.log(number);
+        }
+        significant = number.toPrecision(_precision) * 1;
+        significant = significant.toString().split('.');
+        integer = significant[0];
+        decimal = (_ref7 = significant[1]) != null ? _ref7 : '';
       }
       integer = NumberHelpers.number_with_delimiter(integer, {
         delimiter: _delimiter
@@ -111,19 +123,19 @@
         label = false;
       } else if (abs_float >= Math.pow(10, 3) && abs_float < Math.pow(10, 6)) {
         denom = Math.pow(10, 3);
-        label = "Thousand";
+        label = 'Thousand';
       } else if (abs_float >= Math.pow(10, 6) && abs_float < Math.pow(10, 9)) {
         denom = Math.pow(10, 6);
-        label = "Million";
+        label = 'Million';
       } else if (abs_float >= Math.pow(10, 9) && abs_float < Math.pow(10, 12)) {
         denom = Math.pow(10, 9);
-        label = "Billion";
+        label = 'Billion';
       } else if (abs_float >= Math.pow(10, 12) && abs_float < Math.pow(10, 15)) {
         denom = Math.pow(10, 12);
-        label = "Trillion";
+        label = 'Trillion';
       } else if (abs_float >= Math.pow(10, 15)) {
         denom = Math.pow(10, 15);
-        label = "Quadrillion";
+        label = 'Quadrillion';
       }
       number = float / denom;
       precise = NumberHelpers.number_with_precision(number, {
@@ -136,8 +148,46 @@
       if (label) {
         return "" + precise + " " + label;
       } else {
-        return "" + precise;
+        return precise;
       }
+    };
+
+    NumberHelpers.number_to_human_size = function(float, opts) {
+      var abs_float, denom, label, number, precise, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _ref4, _separator, _significant, _strip_insignificant_zeros;
+      if (opts == null) {
+        opts = {};
+      }
+      _precision = (_ref = opts.precision) != null ? _ref : 3;
+      _separator = (_ref1 = opts.separator) != null ? _ref1 : '.';
+      _significant = (_ref2 = opts.significant) != null ? _ref2 : true;
+      _delimiter = (_ref3 = opts.delimiter) != null ? _ref3 : ',';
+      _strip_insignificant_zeros = (_ref4 = opts.strip_insignificant_zeros) != null ? _ref4 : false;
+      abs_float = Math.abs(float);
+      if (abs_float < Math.pow(10, 3)) {
+        denom = 1;
+        label = 'Bytes';
+      } else if (abs_float >= Math.pow(10, 3) && abs_float < Math.pow(10, 6)) {
+        denom = Math.pow(10, 3);
+        label = 'KB';
+      } else if (abs_float >= Math.pow(10, 6) && abs_float < Math.pow(10, 9)) {
+        denom = Math.pow(10, 6);
+        label = 'MB';
+      } else if (abs_float >= Math.pow(10, 9) && abs_float < Math.pow(10, 12)) {
+        denom = Math.pow(10, 9);
+        label = 'GB';
+      } else if (abs_float >= Math.pow(10, 12) && abs_float < Math.pow(10, 15)) {
+        denom = Math.pow(10, 12);
+        label = 'TB';
+      }
+      number = float / denom;
+      precise = NumberHelpers.number_with_precision(number, {
+        precision: _precision,
+        significant: _significant,
+        delimiter: _delimiter,
+        separator: _separator,
+        strip_insignificant_zeros: label === 'Bytes' ? true : _strip_insignificant_zeros
+      });
+      return "" + precise + " " + label;
     };
 
     return NumberHelpers;
