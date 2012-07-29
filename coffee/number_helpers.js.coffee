@@ -49,13 +49,32 @@ class @NumberHelpers
     _significant  = opts.significant ? false
     _strip_insignificant_zeros = opts.strip_insignificant_zeros ? false
     
-    multiple  = Math.pow(10, _precision)
-    rounded   = Math.round(float * multiple) / multiple
-        
+    # Break number into inspectable pieces
+    number    = float.toString().split('.')
+    integer   = number[0] 
+    decimal   = number[1] ? ''
+      
+    # Significant Digits need rounding to match number of sig digits  
+    if _significant
+      rnd = _precision - integer.length
+    else
+      rnd = _precision
+    
+    # Make sure rounding is not to a negative place
+    rnd = 0 if rnd < 1
+    
+    # Round
+    multiple  = Math.pow(10, rnd)
+    if multiple > 1
+      rounded   = Math.round(float * multiple) / multiple
+    else
+      rounded = float
+    console.log rounded, float
+    # Break number into inspectable pieces
     number    = rounded.toString().split('.')
     integer   = number[0] 
     decimal   = number[1] ? ''
-    
+                
     # Pad to _precision
     decimal = parseFloat("0.#{decimal}").toFixed(_precision) 
     decimal = decimal.toString().split('.')
@@ -72,14 +91,8 @@ class @NumberHelpers
       sigs++ unless num_array[i] is '.' or num_array[i] is '0'
       i++
     
-    if _significant and sigs > _precision
-      
-      # toPrecision() rounds therefor need to chomp
-      if decimal.toString().length >= _precision
-        chomp   = _precision - integer.toString().length
-        decimal = decimal.toString().substr(0, chomp)
-        number  = "#{integer}.#{decimal}" * 1 
-        console.log number
+    # Significant Digits
+    if _significant and sigs >= _precision
       significant = number.toPrecision(_precision) * 1
       significant = significant.toString().split('.')
       integer     = significant[0] 
@@ -90,7 +103,7 @@ class @NumberHelpers
     
     # Strip Insignificant Digits
     decimal = '' if _strip_insignificant_zeros
-      
+    
     # Remove separator if no decimal
     _separator = '' unless decimal
             
@@ -148,6 +161,12 @@ class @NumberHelpers
     _significant  = opts.significant  ? true
     _delimiter    = opts.delimiter    ? ','
     _strip_insignificant_zeros = opts.strip_insignificant_zeros ? false
+    
+    # Power of 10 to Bytes Converter
+    float = float / 1.024 if float > 1000
+    float = float / 1.024 if float > 1000000
+    float = float / 1.024 if float > 1000000000
+    float = float / 1.024 if float > 1000000000000
     
     # Remove the sign of the number for easier comparision
     abs_float = Math.abs(float)

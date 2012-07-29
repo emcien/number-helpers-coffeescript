@@ -55,7 +55,7 @@
     };
 
     NumberHelpers.number_with_precision = function(float, opts) {
-      var chomp, decimal, i, integer, multiple, num_array, num_lngth, number, rounded, significant, sigs, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _separator, _significant, _strip_insignificant_zeros;
+      var decimal, i, integer, multiple, num_array, num_lngth, number, rnd, rounded, significant, sigs, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _separator, _significant, _strip_insignificant_zeros;
       if (opts == null) {
         opts = {};
       }
@@ -64,14 +64,30 @@
       _separator = (_ref2 = opts.separator) != null ? _ref2 : '.';
       _significant = (_ref3 = opts.significant) != null ? _ref3 : false;
       _strip_insignificant_zeros = (_ref4 = opts.strip_insignificant_zeros) != null ? _ref4 : false;
-      multiple = Math.pow(10, _precision);
-      rounded = Math.round(float * multiple) / multiple;
-      number = rounded.toString().split('.');
+      number = float.toString().split('.');
       integer = number[0];
       decimal = (_ref5 = number[1]) != null ? _ref5 : '';
+      if (_significant) {
+        rnd = _precision - integer.length;
+      } else {
+        rnd = _precision;
+      }
+      if (rnd < 1) {
+        rnd = 0;
+      }
+      multiple = Math.pow(10, rnd);
+      if (multiple > 1) {
+        rounded = Math.round(float * multiple) / multiple;
+      } else {
+        rounded = float;
+      }
+      console.log(rounded, float);
+      number = rounded.toString().split('.');
+      integer = number[0];
+      decimal = (_ref6 = number[1]) != null ? _ref6 : '';
       decimal = parseFloat("0." + decimal).toFixed(_precision);
       decimal = decimal.toString().split('.');
-      decimal = (_ref6 = decimal[1]) != null ? _ref6 : '';
+      decimal = (_ref7 = decimal[1]) != null ? _ref7 : '';
       number = ("" + integer + "." + decimal) * 1;
       num_array = number.toString().split('');
       num_lngth = num_array.length;
@@ -83,17 +99,11 @@
         }
         i++;
       }
-      if (_significant && sigs > _precision) {
-        if (decimal.toString().length >= _precision) {
-          chomp = _precision - integer.toString().length;
-          decimal = decimal.toString().substr(0, chomp);
-          number = ("" + integer + "." + decimal) * 1;
-          console.log(number);
-        }
+      if (_significant && sigs >= _precision) {
         significant = number.toPrecision(_precision) * 1;
         significant = significant.toString().split('.');
         integer = significant[0];
-        decimal = (_ref7 = significant[1]) != null ? _ref7 : '';
+        decimal = (_ref8 = significant[1]) != null ? _ref8 : '';
       }
       integer = NumberHelpers.number_with_delimiter(integer, {
         delimiter: _delimiter
@@ -162,6 +172,18 @@
       _significant = (_ref2 = opts.significant) != null ? _ref2 : true;
       _delimiter = (_ref3 = opts.delimiter) != null ? _ref3 : ',';
       _strip_insignificant_zeros = (_ref4 = opts.strip_insignificant_zeros) != null ? _ref4 : false;
+      if (float > 1000) {
+        float = float / 1.024;
+      }
+      if (float > 1000000) {
+        float = float / 1.024;
+      }
+      if (float > 1000000000) {
+        float = float / 1.024;
+      }
+      if (float > 1000000000000) {
+        float = float / 1.024;
+      }
       abs_float = Math.abs(float);
       if (abs_float < Math.pow(10, 3)) {
         denom = 1;
