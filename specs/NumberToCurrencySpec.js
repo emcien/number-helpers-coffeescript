@@ -38,5 +38,4 @@ describe("Number To Currency", function() {
     var out = NumberHelpers.number_to_currency(1234567890.50, {unit:"&pound;", separator:",", delimiter:""});
     expect(out).toBe('&pound;1234567890,50');
   });
-  
 });
