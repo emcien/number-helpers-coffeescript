@@ -37,7 +37,7 @@ describe("Number To Human Size", function() {
   });
   it('Precision 5', function() {
     var out = NumberHelpers.number_to_human_size(1234567890123, {precision: 5});
-    expect(out).toBe('1.1229 TB');
+    expect(out).toBe('1.1228 TB');
   });
   it('500 MB, Precision 5', function() {
     var out = NumberHelpers.number_to_human_size(524288000, {precision: 5, strip_insignificant_zeros: true});

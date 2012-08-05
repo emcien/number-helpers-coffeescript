@@ -38,7 +38,7 @@ class @NumberHelpers
     _separator = '' unless decimal
     
     rgx = /(\d+)(\d{3})/
-    integer = integer .replace(rgx, "$1" + _delimiter + "$2") while rgx.test(integer ) if _delimiter
+    integer = integer .replace(rgx, "$1" + _delimiter + "$2") while rgx.test(integer) if _delimiter
     
     return "#{integer}#{_separator}#{decimal}"
   
@@ -69,7 +69,7 @@ class @NumberHelpers
       rounded   = Math.round(float * multiple) / multiple
     else
       rounded = float
-    console.log rounded, float
+    
     # Break number into inspectable pieces
     number    = rounded.toString().split('.')
     integer   = number[0] 
@@ -200,3 +200,38 @@ class @NumberHelpers
     )
     
     return "#{precise} #{label}"
+  
+  @number_to_phone = (number, opts={}) ->
+    _area_code    = opts.area_code ? false
+    _delimiter    = opts.delimiter ? '-'
+    _country_code = opts.country_code ? false
+    _extension    = opts.extension ? false
+    
+    # Not a numerical value
+    return number if isNaN(number)
+    
+    str = number.toString()
+    lng = str.length
+    
+    # Last Four Digits
+    last = str.substr(lng - 4, lng)
+    
+    if lng < 8
+      first = str.substr(0, 3)
+    else
+      first   = str.substr(0, 3)
+      second  = str.substr(3,3)
+      
+      # Area Code
+      if _area_code
+        first = "(#{first}) #{second}" 
+      else
+        first = "#{first}#{_delimiter}#{second}"
+    
+    # Extension Code
+    _extension = if _extension then " x #{opts.extension}" else '' 
+    
+    # Country Code
+    _country_code = if _country_code then "+#{_country_code}#{_delimiter}" else ''
+    
+    return "#{_country_code}#{first}#{_delimiter}#{last}#{_extension}"
