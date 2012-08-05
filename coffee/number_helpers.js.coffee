@@ -235,3 +235,12 @@ class @NumberHelpers
     _country_code = if _country_code then "+#{_country_code}#{_delimiter}" else ''
     
     return "#{_country_code}#{first}#{_delimiter}#{last}#{_extension}"
+  
+  @number_to_percentage = (float, opts={}) ->
+    _precision    = opts.precision    ? 3
+    _separator    = opts.separator    ? '.'
+    _significant  = opts.significant  ? true
+    _delimiter    = opts.delimiter    ? ''
+    _strip_insignificant_zeros = opts.strip_insignificant_zeros ? false
+    
+    return true

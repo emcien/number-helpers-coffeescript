@@ -242,6 +242,19 @@
       return "" + _country_code + first + _delimiter + last + _extension;
     };
 
+    NumberHelpers.number_to_percentage = function(float, opts) {
+      var _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _ref4, _separator, _significant, _strip_insignificant_zeros;
+      if (opts == null) {
+        opts = {};
+      }
+      _precision = (_ref = opts.precision) != null ? _ref : 3;
+      _separator = (_ref1 = opts.separator) != null ? _ref1 : '.';
+      _significant = (_ref2 = opts.significant) != null ? _ref2 : true;
+      _delimiter = (_ref3 = opts.delimiter) != null ? _ref3 : '';
+      _strip_insignificant_zeros = (_ref4 = opts.strip_insignificant_zeros) != null ? _ref4 : false;
+      return true;
+    };
+
     return NumberHelpers;
 
   })();
