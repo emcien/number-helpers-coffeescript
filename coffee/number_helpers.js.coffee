@@ -25,8 +25,6 @@ class @NumberHelpers
     return "#{_unit}#{integer}#{_separator}#{decimal}"
   
   @number_with_delimiter = (float, opts={}) ->
-    # _separator - Sets the separator between the units (defaults to ".").
-    # _delimiter - Sets the thousands delimiter (defaults to ",").
     _separator  = opts.separator ? '.'
     _delimiter  = opts.delimiter ? ','
     
@@ -92,7 +90,7 @@ class @NumberHelpers
       i++
     
     # Significant Digits
-    if _significant and sigs >= _precision
+    if _significant and sigs >= _precision and _precision > 0
       significant = number.toPrecision(_precision) * 1
       significant = significant.toString().split('.')
       integer     = significant[0] 
@@ -239,8 +237,17 @@ class @NumberHelpers
   @number_to_percentage = (float, opts={}) ->
     _precision    = opts.precision    ? 3
     _separator    = opts.separator    ? '.'
-    _significant  = opts.significant  ? true
+    _significant  = opts.significant  ? false
     _delimiter    = opts.delimiter    ? ''
     _strip_insignificant_zeros = opts.strip_insignificant_zeros ? false
     
-    return true
+    unless isNaN(float)
+      float = NumberHelpers.number_with_precision(float,
+        precision:                  _precision
+        significant:                _significant
+        delimiter:                  _delimiter
+        separator:                  _separator
+        strip_insignificant_zeros:  _strip_insignificant_zeros
+      )
+    
+    return "#{float}%"
