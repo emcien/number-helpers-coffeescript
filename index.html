@@ -30,11 +30,21 @@
       <section>
         <h2>Problem</h2>
 
-<p>Now that View Code is migrating more to BackBone (or JS) rendered context, the useful Rails NumberHelpers are not available. </p>
+<p>Now that View Code is migrating more to BackBone (or JS) rendered context, the useful Rails NumberHelpers are not available. I know the Rails methods by heart, I do not want to learn new syntax for the identical solution in JavaScript. </p>
 
 <h2>Solution</h2>
 
-<p>A CoffeeScript implementation of the Rails NumberHelpers solves this problem with a consistent api regardless of the View context.      </p>
+<p>A CoffeeScript implementation of the Rails NumberHelpers solves this problem with a consistent api regardless of the View context.</p>
+
+<h2>Details</h2>
+
+<p>This library uses the <a href="http://api.rubyonrails.org/classes/ActionView/Helpers/NumberHelper.html">Rails NumberHelpers Documentation</a> as the recipe for all method names, parameters, and test cases. This library uses the Jasmine Test Framework to implement the same test specs as the Rails code.</p>
+
+<h2>Caveat</h2>
+
+<p>This is an English only local. Currently no internationalization is supported. </p>
+
+<h2>API</h2>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/caltman-emcien">caltman-emcien</a></p>
