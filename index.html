@@ -53,7 +53,7 @@
 
 <p>Formats a number into a currency string (e.g., $13.65). You can customize the format in the options hash.</p>
 
-<p><code>NumberHelpers.number_to_currency(123, {option: value})</code></p>
+<p><code class="prime">NumberHelpers.number_to_currency(123, {option: value})</code></p>
 
 <code>{ precision: 2 }</code> - Sets the level of precision (defaults to 2).<br>
 <code>{ unit: '$' }</code> - Sets the denomination of the currency (defaults to "$").<br>
@@ -95,7 +95,7 @@ $1,234,567,890.5060
 
 <p>Pretty prints (formats and approximates) a number in a way it is more readable by humans (eg.: 1200000000 becomes “1.2 Billion”). This is useful for numbers that can get very large (and too hard to read).</p>
 
-<p><code>NumberHelpers.number_to_human(123, {option: value})</code></p>
+<p><code class="prime">NumberHelpers.number_to_human(123, {option: value})</code></p>
 
 <code>{ precision: 3 }</code> - Sets the level of precision (defaults to 3).<br>
 <code>{ separator: '.' }</code> - Sets the separator between the units (defaults to ".").<br>
@@ -139,7 +139,7 @@ $1,234,567,890.5060
 
 <p>Formats the bytes in number into a more understandable representation (e.g., giving it 1500 yields 1.5 KB). This method is useful for reporting file sizes to users. You can customize the format in the options hash.</p>
 
-<p><code>NumberHelpers.number_to_human_size(123, {option: value})</code></p>
+<p><code class="prime">NumberHelpers.number_to_human_size(123, {option: value})</code></p>
 
 <code>{ precision: 3 }</code> - Sets the level of precision (defaults to 3).<br>
 <code>{ separator: '.' }</code> - Sets the separator between the units (defaults to ".").<br>
@@ -179,7 +179,7 @@ $1,234,567,890.5060
 
 <p>Formats a number as a percentage string (e.g., 65%). You can customize the format in the options hash.</p>
 
-<p><code>NumberHelpers.number_to_percentage(123, {option: value})</code></p>
+<p><code class="prime">NumberHelpers.number_to_percentage(123, {option: value})</code></p>
 
 <code>{ precision: 3 }</code> - Sets the level of precision (defaults to 3).<br>
 <code>{ separator: '.' }</code> - Sets the separator between the units (defaults to ".").<br>
@@ -209,7 +209,7 @@ $1,234,567,890.5060
 
 <p>Formats a number into a US phone number (e.g., (555) 123-9876). You can customize the format in the options hash.</p>
 
-<p><code>NumberHelpers.number_to_phone(5551234, {option: value})</code></p>
+<p><code class="prime">NumberHelpers.number_to_phone(5551234, {option: value})</code></p>
 
 <code>{ area_code: false }</code> - Adds parentheses around the area code.<br>
 <code>{ delimiter: '-' }</code> - Sets the thousands delimiter (defaults to "-").<br>
@@ -242,7 +242,7 @@ $1,234,567,890.5060
 
 <p>Formats a number with grouped thousands using delimiter (e.g., 12,324). You can customize the format in the options hash.</p>
 
-<p><code>NumberHelpers.number_with_delimiter(12345678, {option: value})</code></p>
+<p><code class="prime">NumberHelpers.number_with_delimiter(12345678, {option: value})</code></p>
 
 <code>{ separator: '.' }</code> - Sets the separator between the units (defaults to ".").<br>
 <code>{ delimiter: ',' }</code> - Sets the thousands delimiter (defaults to ",").
@@ -273,7 +273,7 @@ $1,234,567,890.5060
 
 <p>Formats a number with the specified level of :precision (e.g., 112.32 has a precision of 2 if :significant is false, and 5 if :significant is true). You can customize the format in the options hash.</p>
 
-<p><code>NumberHelpers.number_with_precision(111.2345, {option: value})</code></p>
+<p><code class="prime">NumberHelpers.number_with_precision(111.2345, {option: value})</code></p>
 
 <code>{ precision: 3 }</code> - Sets the level of precision (defaults to 3).<br>
 <code>{ separator: '.' }</code> - Sets the separator between the units (defaults to ".").<br>

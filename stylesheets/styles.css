@@ -76,6 +76,13 @@ code, pre {
   border-radius: 3px;
 }
 
+code.prime{
+  background:#F6F6B5;
+  color: #111;
+  border: solid 1px #c6c685;
+  box-shadow: 0 0 5px 0 rgba(255, 255, 255, .5)
+}
+
 p.example code{
   background:#c7c7c7;
   border-color:#b7b7b7;
