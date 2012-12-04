@@ -37,7 +37,18 @@
 
 <hr>
 
-<h2>Number to Currency</h2>
+<strong>Methods</strong>:<br>
+<a href="#number_to_currency">number_to_currency</a>, 
+<a href="#number_to_human">number_to_human</a>, 
+<a href="#number_to_human_size">number_to_human_size</a>, 
+<a href="#number_to_percentage">number_to_percentage</a>, 
+<a href="#number_to_phone">number_to_phone</a>, 
+<a href="#number_with_delimiter">number_with_delimiter</a>, 
+<a href="#number_with_precision">number_with_precision</a>
+<hr style="margin-top: 20px;">
+
+<a name="number_to_currency"></a>
+<h2>Number to Currency</h2><a name="number_to_currency"></a>
 
 <p>Formats a number into a currency string (e.g., $13.65). You can customize the format in the options hash.</p>
 
@@ -78,7 +89,7 @@ $1,234,567,890.5060
 </p>
 
 <hr>
-
+<a name="number_to_human"></a>
 <h2>Number to Human</h2>
 
 <p>Pretty prints (formats and approximates) a number in a way it is more readable by humans (eg.: 1200000000 becomes “1.2 Billion”). This is useful for numbers that can get very large (and too hard to read).</p>
@@ -122,7 +133,7 @@ $1,234,567,890.5060
 </p>
 
 <hr>
-
+<a name="number_to_human_size"></a>
 <h2>Number to Human Size</h2>
 
 <p>Formats the bytes in number into a more understandable representation (e.g., giving it 1500 yields 1.5 KB). This method is useful for reporting file sizes to users. You can customize the format in the options hash.</p>
@@ -162,7 +173,7 @@ $1,234,567,890.5060
 </p>
 
 <hr>
-
+<a name="number_to_percentage"></a>
 <h2>Number to Percentage</h2>
 
 <p>Formats a number as a percentage string (e.g., 65%). You can customize the format in the options hash.</p>
@@ -192,7 +203,7 @@ $1,234,567,890.5060
 </p>
 
 <hr>
-
+<a name="number_to_phone"></a>
 <h2>Number to Phone</h2>
 
 <p>Formats a number into a US phone number (e.g., (555) 123-9876). You can customize the format in the options hash.</p>
@@ -225,7 +236,7 @@ $1,234,567,890.5060
 </p>
 
 <hr>
-
+<a name="number_with_delimiter"></a>
 <h2>Number with Delimiter</h2>
 
 <p>Formats a number with grouped thousands using delimiter (e.g., 12,324). You can customize the format in the options hash.</p>
@@ -239,25 +250,65 @@ $1,234,567,890.5060
   <strong>Examples:</strong>
   <code>NumberHelpers.number_with_delimiter(12345678)</code>
   12,345,678
-  <code>NumberHelpers.number_with_delimiter()</code>
+  <code>NumberHelpers.number_with_delimiter('123456')</code>
+  123,456
+  <code>NumberHelpers.number_with_delimiter(12345678.05)</code>
+  12,345,678.05
+  <code>NumberHelpers.number_with_delimiter(12345678, {delimiter:'.'})</code>
+  12.345.678
+  <code>NumberHelpers.number_with_delimiter(12345678, {delimiter:','})</code>
+  12,345,678
+  <code>NumberHelpers.number_with_delimiter(12345678.05, {separator:' '})</code>
+  12,345,678 05
+  <code>NumberHelpers.number_with_delimiter('112a')</code>
+  112a
+  <code>NumberHelpers.number_with_delimiter(98765432.98, {delimiter:' ',separator:','})</code>
+  98 765 432,98
+</p>
 
-  <code>NumberHelpers.number_with_delimiter()</code>
+<hr>
+<a name="number_with_precision"></a>
+<h2>Number with Precision</h2>
 
-  <code>NumberHelpers.number_with_delimiter()</code>
+<p>Formats a number with the specified level of :precision (e.g., 112.32 has a precision of 2 if :significant is false, and 5 if :significant is true). You can customize the format in the options hash.</p>
 
-  <code>NumberHelpers.number_with_delimiter()</code>
+<p><code>NumberHelpers.number_with_precision(111.2345, {option: value})</code></p>
 
-  <code>NumberHelpers.number_with_delimiter()</code>
+<code>{ precision: 3 }</code> - Sets the level of precision (defaults to 3).<br>
+<code>{ separator: '.' }</code> - Sets the separator between the units (defaults to ".").<br>
+<code>{ delimiter: ',' }</code> - Sets the thousands delimiter (defaults to ",").<br>
+<code>{ significant: false }</code> -  If true, precision will be the # of significant_digits. If false, the # of fractional digits (defaults to false)<br>
+<code>{ strip_insignificant_zeros: false}</code> - If true removes insignificant zeros after the decimal separator (defaults to false)
 
-  <code>NumberHelpers.number_with_delimiter()</code>
-
-  <code>NumberHelpers.number_with_delimiter()</code>
-
+<p class="example">
+  <strong>Examples:</strong>
+  <code>NumberHelpers.number_with_precision(111.2345)</code>
+  111.235
+  <code>NumberHelpers.number_with_precision(111.2345, {precision: 2})</code>
+  111.23
+  <code>NumberHelpers.number_with_precision(13, {precision: 5})</code>
+  13.00000
+  <code>NumberHelpers.number_with_precision(389.32314, {precision: 0})</code>
+  389
+  <code>NumberHelpers.number_with_precision(111.2345, {significant: true})</code>
+  111
+  <code>NumberHelpers.number_with_precision(111.2345, {significant: true, precision: 1})</code>
+  100
+  <code>NumberHelpers.number_with_precision(389.32314, {significant: true, precision: 4})</code>
+  389.3
+  <code>NumberHelpers.number_with_precision(13, {significant: true, precision: 5})</code>
+  13.00000
+  <code>NumberHelpers.number_with_precision(13.00000004, {significant: true, precision: 6})</code>
+  13.000000
+  <code>NumberHelpers.number_with_precision(1111.2345, {separator: ',', precision: 2, delimiter: '.'})</code>
+  1.111,23
+  <code>NumberHelpers.number_with_precision(13, {significant: true, precision: 5, strip_insignificant_zeros: true})</code>
+  13
 </p>
 
       </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/caltman-emcien">caltman-emcien</a></p>
+        <p>This project is maintained by <a href="https://github.com/emcien">emcien</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
