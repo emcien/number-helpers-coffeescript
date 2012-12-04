@@ -1,1 +1,267 @@
-Foo
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>NumberHelpers in CoffeeScript by caltman-emcien</title>
+  <link rel="stylesheet" href="stylesheets/styles.css">
+</head>
+<body>
+
+<div class="wrapper">
+  <header>
+    <img src="http://emcien.com/wp-content/uploads/2012/04/emcien_logo1.png" width="220" height="61" alt="Emcien">
+    <h1>NumberHelpers in CoffeeScript</h1>
+    <p>Ruby on Rails NumberHelpers written in CoffeeScript</p>
+    <p class="view"><a href="https://github.com/emcien/number-helpers-coffeescript">View the Project on GitHub <small>emcien/number-helpers-coffeescript</small></a></p>
+    <ul>
+      <li><a href="https://github.com/emcien/number-helpers-coffeescript/zipball/master">Download <strong>ZIP File</strong></a></li>
+      <li><a href="https://github.com/emcien/number-helpers-coffeescript/tarball/master">Download <strong>TAR Ball</strong></a></li>
+      <li><a href="https://github.com/emcien/number-helpers-coffeescript">View On <strong>GitHub</strong></a></li>
+    </ul>
+    <h2>Emcien is always looking for smart engineers.</h2>
+    <a href="mailto:devjobs@emcien.com">Send us your Github Profile and Resume</a>
+  </header>
+  <section>
+        
+<h2>Background</h2>
+<p>At <a href="http://emcien.com" target="_blank">Emcien</a>, we found more of our application View Code migrating into a BackBone (or JS) rendered context. The useful Rails NumberHelpers, which we have grown accustomed to, are not available. Therefore we created a CoffeeScript implementation of the Rails NumberHelpers to easily display numberic data in a fomatted fashion.</p>
+
+<h2>Details</h2>
+<p>This library uses the <a href="http://api.rubyonrails.org/classes/ActionView/Helpers/NumberHelper.html">Rails NumberHelpers Documentation</a> as the recipe for all method names, parameters, and test cases. For testing, the Jasmine Test Framework implements the same test specs as the Rails code.</p>
+
+<h2>Caveat</h2>
+<p>This is an English only local. Currently no internationalization is supported.</p>
+
+<h2>Emcien</h2>
+<p>This library is extracted from the several Rails/BackBone applications written at <a href="http://emcien.com">Emcien</a>. Emcien is always looking for smart Software Engineers/Developers to work from our Atlanta, GA headquarters. Send us an email <a href="mailto:devjobs@emcien.com">devjobs@emcien.com</a>.</p>
+
+<hr>
+
+<h2>Number to Currency</h2>
+
+<p>Formats a number into a currency string (e.g., $13.65). You can customize the format in the options hash.</p>
+
+<p><code>NumberHelpers.number_to_currency(123, {option: value})</code></p>
+
+<code>{ precision: 2 }</code> - Sets the level of precision (defaults to 2).<br>
+<code>{ unit: '$' }</code> - Sets the denomination of the currency (defaults to "$").<br>
+<code>{ separator: '.' }</code> - Sets the separator between the units (defaults to ".").<br>
+<code>{ delimiter: ',' }</code> - Sets the thousands delimiter (defaults to ",").
+
+<p class="example">
+  <strong>Examples:</strong>
+  <code>NumberHelpers.number_to_currency(1234567890.50)</code>
+  $1,234,567,890.50
+
+  <code>NumberHelpers.number_to_currency('1234567890.50')</code>
+$1,234,567,890.50
+
+<code>NumberHelpers.number_to_currency(1234567890.506)</code>
+$1,234,567,890.51
+
+<code>NumberHelpers.number_to_currency(1234567890.506, {precision: 0})</code>
+$1,234,567,890
+
+<code>NumberHelpers.number_to_currency(1234567890.506, {precision: 1})</code>
+$1,234,567,890.5
+
+<code>NumberHelpers.number_to_currency(1234567890.506, {precision: 3})</code>
+$1,234,567,890.506
+
+<code>NumberHelpers.number_to_currency(1234567890.506, {precision: 4})</code>
+$1,234,567,890.5060
+
+<code>NumberHelpers.number_to_currency('123a456')</code>$123a456
+
+<code>NumberHelpers.number_to_currency(1234567890.50, {unit:"&amp;pound;", separator:",", delimiter:""})</code>
+£1234567890,50
+</p>
+
+<hr>
+
+<h2>Number to Human</h2>
+
+<p>Pretty prints (formats and approximates) a number in a way it is more readable by humans (eg.: 1200000000 becomes “1.2 Billion”). This is useful for numbers that can get very large (and too hard to read).</p>
+
+<p><code>NumberHelpers.number_to_human(123, {option: value})</code></p>
+
+<code>{ precision: 3 }</code> - Sets the level of precision (defaults to 3).<br>
+<code>{ separator: '.' }</code> - Sets the separator between the units (defaults to ".").<br>
+<code>{ delimiter: ',' }</code> - Sets the thousands delimiter (defaults to ",").<br>
+<code>{ significant: true }</code> -  If true, precision will be the # of significant_digits. If false, the # of fractional digits (defaults to true)<br>
+<code>{ strip_insignificant_zeros: true}</code> - If true removes insignificant zeros after the decimal separator (defaults to true)
+
+<p class="example">
+  <strong>Examples:</strong>
+  <code>NumberHelpers.number_to_human(123)</code>
+  123
+  <code>NumberHelpers.number_to_human(1234)</code>
+  1.23 Thousand
+  <code>NumberHelpers.number_to_human(12345)</code>
+  12.3 Thousand
+  <code>NumberHelpers.number_to_human(1234567)</code>
+  1.23 Million
+  <code>NumberHelpers.number_to_human(1234567890)</code>
+  1.23 Billion
+  <code>NumberHelpers.number_to_human(1234567890123)</code>
+  1.23 Trillion
+  <code>NumberHelpers.number_to_human(1234567890123456)</code>
+  1.23 Quadrillion
+  <code>NumberHelpers.number_to_human(1234567890123456789)</code>
+  1230 Quadrillion
+  <code>NumberHelpers.number_to_human(489939, {precision: 2})</code>
+  490 Thousand
+  <code>NumberHelpers.number_to_human(489939, {precision: 4})</code>
+  489.9 Thousand
+  <code>NumberHelpers.number_to_human(1234567, {precision: 4, significant: false})</code>
+  1.2346 Million
+  <code>NumberHelpers.number_to_human(1234567, {precision: 1, significant: false, separator: ','})</code>
+  1,2 Million
+  <code>NumberHelpers.number_to_human(500000000, {precision: 5, strip_insignificant_zeros: true})</code>
+  500 Million
+</p>
+
+<hr>
+
+<h2>Number to Human Size</h2>
+
+<p>Formats the bytes in number into a more understandable representation (e.g., giving it 1500 yields 1.5 KB). This method is useful for reporting file sizes to users. You can customize the format in the options hash.</p>
+
+<p><code>NumberHelpers.number_to_human_size(123, {option: value})</code></p>
+
+<code>{ precision: 3 }</code> - Sets the level of precision (defaults to 3).<br>
+<code>{ separator: '.' }</code> - Sets the separator between the units (defaults to ".").<br>
+<code>{ delimiter: ',' }</code> - Sets the thousands delimiter (defaults to ",").<br>
+<code>{ significant: true }</code> -  If true, precision will be the # of significant_digits. If false, the # of fractional digits (defaults to true)<br>
+<code>{ strip_insignificant_zeros: true}</code> - If true removes insignificant zeros after the decimal separator (defaults to true)
+
+<p class="example">
+  <strong>Examples:</strong>
+  <code>NumberHelpers.number_to_human_size(123)</code>
+  123 Bytes
+  <code>NumberHelpers.number_to_human_size(1234)</code>
+  1.21 KB
+  <code>NumberHelpers.number_to_human_size(12345)</code>
+  12.1 KB
+  <code>NumberHelpers.number_to_human_size(1234567)</code>
+  1.18 MB
+  <code>NumberHelpers.number_to_human_size(1234567890)</code>
+  1.15 GB
+  <code>NumberHelpers.number_to_human_size(1234567890123)</code>
+  1.12 TB
+  <code>NumberHelpers.number_to_human_size(1234567, {precision: 2})</code>
+  1.2 MB
+  <code>NumberHelpers.number_to_human_size(483989, {precision: 2})</code>
+  470 KB
+  <code>NumberHelpers.number_to_human_size(1234567, {precision: 2, separator: ','})</code>
+  1,2 MB
+  <code>NumberHelpers.number_to_human_size(1234567890123, {precision: 5})</code>
+  1.1228 TB
+  <code>NumberHelpers.number_to_human_size(524288000, {precision: 5, strip_insignificant_zeros: true})</code>
+  500 MB
+</p>
+
+<hr>
+
+<h2>Number to Percentage</h2>
+
+<p>Formats a number as a percentage string (e.g., 65%). You can customize the format in the options hash.</p>
+
+<p><code>NumberHelpers.number_to_percentage(123, {option: value})</code></p>
+
+<code>{ precision: 3 }</code> - Sets the level of precision (defaults to 3).<br>
+<code>{ separator: '.' }</code> - Sets the separator between the units (defaults to ".").<br>
+<code>{ delimiter: '' }</code> - Sets the thousands delimiter (defaults to "").<br>
+<code>{ significant: false }</code> - If true, precision will be the # of significant_digits. If false, the # of fractional digits (defaults to false)<br>
+<code>{ strip_insignificant_zeros: false}</code> - If true removes insignificant zeros after the decimal separator (defaults to false)
+
+<p class="example">
+  <strong>Examples:</strong>
+  <code>NumberHelpers.number_to_percentage(100)</code>
+  100.000%
+  <code>NumberHelpers.number_to_percentage(98)</code>
+  98.000%
+  <code>NumberHelpers.number_to_percentage(100, {precision: 0})</code>
+  100%
+  <code>NumberHelpers.number_to_percentage(1000, {delimiter: '.', separator: ','})</code>
+  1.000,000%
+  <code>NumberHelpers.number_to_percentage(302.24398923423, {precision: 5})</code>
+  302.24399%
+  <code>NumberHelpers.number_to_percentage('98a')</code>
+  98a%
+</p>
+
+<hr>
+
+<h2>Number to Phone</h2>
+
+<p>Formats a number into a US phone number (e.g., (555) 123-9876). You can customize the format in the options hash.</p>
+
+<p><code>NumberHelpers.number_to_phone(5551234, {option: value})</code></p>
+
+<code>{ area_code: false }</code> - Adds parentheses around the area code.<br>
+<code>{ delimiter: '-' }</code> - Sets the thousands delimiter (defaults to "-").<br>
+<code>{ extension: false }</code> - Specifies an extension to add to the end of the generated number.<br>
+<code>{ country_code: false }</code> - Sets the country code for the phone number.
+
+<p class="example">
+  <strong>Examples:</strong>
+  <code>NumberHelpers.number_to_phone(5551234)</code>
+  555-1234
+  <code>NumberHelpers.number_to_phone(1235551234)</code>
+  123-555-1234
+  <code>NumberHelpers.number_to_phone(1235551234, {area_code: true})</code>
+  (123) 555-1234
+  <code>NumberHelpers.number_to_phone(1235551234, {delimiter: ' '})</code>
+  123 555 1234
+  <code>NumberHelpers.number_to_phone(1235551234, {area_code: true, extension: 555})</code>
+  (123) 555-1234 x 555
+  <code>NumberHelpers.number_to_phone(1235551234, {country_code: 1})</code>
+  +1-123-555-1234
+  <code>NumberHelpers.number_to_phone(123a456)</code>
+  123a456
+  <code>NumberHelpers.number_to_phone(1235551234, {country_code: 1, extension: 1343, delimiter: '.'})</code>
+  +1.123.555.1234 x 1343
+</p>
+
+<hr>
+
+<h2>Number with Delimiter</h2>
+
+<p>Formats a number with grouped thousands using delimiter (e.g., 12,324). You can customize the format in the options hash.</p>
+
+<p><code>NumberHelpers.number_with_delimiter(12345678, {option: value})</code></p>
+
+<code>{ separator: '.' }</code> - Sets the separator between the units (defaults to ".").<br>
+<code>{ delimiter: ',' }</code> - Sets the thousands delimiter (defaults to ",").
+
+<p class="example">
+  <strong>Examples:</strong>
+  <code>NumberHelpers.number_with_delimiter(12345678)</code>
+  12,345,678
+  <code>NumberHelpers.number_with_delimiter()</code>
+
+  <code>NumberHelpers.number_with_delimiter()</code>
+
+  <code>NumberHelpers.number_with_delimiter()</code>
+
+  <code>NumberHelpers.number_with_delimiter()</code>
+
+  <code>NumberHelpers.number_with_delimiter()</code>
+
+  <code>NumberHelpers.number_with_delimiter()</code>
+
+  <code>NumberHelpers.number_with_delimiter()</code>
+
+</p>
+
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/caltman-emcien">caltman-emcien</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>

@@ -3,17 +3,22 @@
 body {
   padding:50px;
   font:14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color:#777;
+  color:#272727;
   font-weight:300;
+  background: #d7d7d7;
 }
 
 h1, h2, h3, h4, h5, h6 {
   color:#222;
-  margin:0 0 20px;
+  margin:0 0 5px;
 }
 
 p, ul, ol, table, pre, dl {
-  margin:0 0 20px;
+  margin:0 0 25px;
+}
+
+p.example{
+  margin-top: 15px;
 }
 
 h1, h2, h3 {
@@ -25,7 +30,7 @@ h1 {
 }
 
 h2 {
-  color:#393939;
+  color:#171717;
 }
 
 h3, h4, h5, h6 {
@@ -33,9 +38,12 @@ h3, h4, h5, h6 {
 }
 
 a {
-  color:#39c;
+  color:#96070b;
   font-weight:400;
   text-decoration:none;
+}
+a:hover{
+  color: #000;
 }
 
 a small {
@@ -61,6 +69,18 @@ code, pre {
   font-family:Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal;
   color:#333;
   font-size:12px;
+  background: #fff;
+  padding: 5px;
+  border: solid 1px #c7c7c7;
+  display: inline-block;
+  border-radius: 3px;
+}
+
+p.example code{
+  background:#c7c7c7;
+  border-color:#b7b7b7;
+  margin-top: 15px;
+  display: block;
 }
 
 pre {
@@ -171,7 +191,8 @@ small {
 
 hr {
   border:0;
-  background:#e5e5e5;
+  background:#f7f7f7;
+  border-top: solid 1px #b7b7b7;
   height:1px;
   margin:0 0 20px;
 }
