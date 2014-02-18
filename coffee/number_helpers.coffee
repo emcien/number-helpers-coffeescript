@@ -100,7 +100,17 @@ class @NumberHelpers
     integer = NumberHelpers.number_with_delimiter(integer, {delimiter: _delimiter})
 
     # Strip Insignificant Digits
-    decimal = '' if _strip_insignificant_zeros
+    if _strip_insignificant_zeros
+      dlen = decimal.length
+      newlen = dlen
+
+      while newlen > 0 and decimal[newlen - 1] == '0'
+        newlen = newlen - 1
+
+      if newlen == 0
+        decimal = ''
+      else if newlen != dlen
+        decimal = decimal.slice(0, newlen)
 
     # Remove separator if no decimal
     _separator = '' unless decimal
