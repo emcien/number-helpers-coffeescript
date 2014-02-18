@@ -2,22 +2,17 @@
 ## Background
 
 At Emcien, we found more of our application View Code migrating into a
-BackBone (or JS) rendered context. The useful Rails NumberHelpers, which
-we have grown accustomed to, are not available. Therefore we created a
-CoffeeScript implementation of the Rails NumberHelpers to easily display
+BackBone (or JS) rendered context. The useful Rails NumberHelpers
+we have grown accustomed to are not available. Out of necessity, we created a
+CoffeeScript implementation of the Rails NumberHelpers to help display
 numeric data in a fomatted fashion.
 
 ## Details
+
 This library uses the
 [Rails NumberHelpers Documentation](http://api.rubyonrails.org/classes/ActionView/Helpers/NumberHelper.html)
 as the recipe for all method names, parameters, and test cases. For testing,
 the Jasmine Test Framework implements the same test specs as the Rails code.
-
-## Caveat
-
-This is an English only locale. Currently no internationalization is supported.
-
----------------
 
 ### Methods:
 
@@ -64,19 +59,19 @@ for numbers that can get very large (and too hard to read).
   - If false, the # of fractional digits (defaults to true)
 
 *Examples:*
-  `NumberHelpers.number_to_human(123)`: `123`
-  `NumberHelpers.number_to_human(1234)`: `1.23 Thousand`
-  `NumberHelpers.number_to_human(12345)`: `12.3 Thousand`
-  `NumberHelpers.number_to_human(1234567)`: `1.23 Million`
-  `NumberHelpers.number_to_human(1234567890)`: `1.23 Billion`
-  `NumberHelpers.number_to_human(1234567890123)`: `1.23 Trillion`
-  `NumberHelpers.number_to_human(1234567890123456)`: `1.23 Quadrillion`
-  `NumberHelpers.number_to_human(1234567890123456789)`: `1230 Quadrillion`
-  `NumberHelpers.number_to_human(489939, {precision: 2})`: `490 Thousand`
-  `NumberHelpers.number_to_human(489939, {precision: 4})`: `489.9 Thousand`
-  `NumberHelpers.number_to_human(1234567, {precision: 4, significant: false})`: `1.2346 Million`
-  `NumberHelpers.number_to_human(1234567, {precision: 1, significant: false, separator: ','})`: `1,2 Million`
-  `NumberHelpers.number_to_human(500000000, {precision: 5, strip_insignificant_zeros: true})`: `500 Million`
+- `NumberHelpers.number_to_human(123)`: `123`
+- `NumberHelpers.number_to_human(1234)`: `1.23 Thousand`
+- `NumberHelpers.number_to_human(12345)`: `12.3 Thousand`
+- `NumberHelpers.number_to_human(1234567)`: `1.23 Million`
+- `NumberHelpers.number_to_human(1234567890)`: `1.23 Billion`
+- `NumberHelpers.number_to_human(1234567890123)`: `1.23 Trillion`
+- `NumberHelpers.number_to_human(1234567890123456)`: `1.23 Quadrillion`
+- `NumberHelpers.number_to_human(1234567890123456789)`: `1230 Quadrillion`
+- `NumberHelpers.number_to_human(489939, {precision: 2})`: `490 Thousand`
+- `NumberHelpers.number_to_human(489939, {precision: 4})`: `489.9 Thousand`
+- `NumberHelpers.number_to_human(1234567, {precision: 4, significant: false})`: `1.2346 Million`
+- `NumberHelpers.number_to_human(1234567, {precision: 1, significant: false, separator: ','})`: `1,2 Million`
+- `NumberHelpers.number_to_human(500000000, {precision: 5, strip_insignificant_zeros: true})`: `500 Million`
 
 ----------
 
@@ -172,14 +167,14 @@ You can customize the format in the options hash.
 - `{ delimiter: ',' }` - Sets the thousands delimiter (defaults to ",").
 
 *Examples:*
-  `NumberHelpers.number_with_delimiter(12345678)`: `12,345,678`
-  `NumberHelpers.number_with_delimiter('123456')`: `123,456`
-  `NumberHelpers.number_with_delimiter(12345678.05)`: `12,345,678.05`
-  `NumberHelpers.number_with_delimiter(12345678, {delimiter:'.'})`: `12.345.678`
-  `NumberHelpers.number_with_delimiter(12345678, {delimiter:','})`: `12,345,678`
-  `NumberHelpers.number_with_delimiter(12345678.05, {separator:' '})`: `12,345,678 05`
-  `NumberHelpers.number_with_delimiter('112a')`: `112a`
-  `NumberHelpers.number_with_delimiter(98765432.98, {delimiter:' ',separator:','})`: `98 765 432,98`
+- `NumberHelpers.number_with_delimiter(12345678)`: `12,345,678`
+- `NumberHelpers.number_with_delimiter('123456')`: `123,456`
+- `NumberHelpers.number_with_delimiter(12345678.05)`: `12,345,678.05`
+- `NumberHelpers.number_with_delimiter(12345678, {delimiter:'.'})`: `12.345.678`
+- `NumberHelpers.number_with_delimiter(12345678, {delimiter:','})`: `12,345,678`
+- `NumberHelpers.number_with_delimiter(12345678.05, {separator:' '})`: `12,345,678 05`
+- `NumberHelpers.number_with_delimiter('112a')`: `112a`
+- `NumberHelpers.number_with_delimiter(98765432.98, {delimiter:' ',separator:','})`: `98 765 432,98`
 
 ------
 
@@ -201,20 +196,21 @@ You can customize the format in the options hash.
   - If false, the # of fractional digits (defaults to false)
 
 *Examples:*
-`NumberHelpers.number_with_precision(111.2345)`: `111.235`
-`NumberHelpers.number_with_precision(111.2345, {precision: 2})`: `111.23`
-`NumberHelpers.number_with_precision(13, {precision: 5})`: `13.00000`
-`NumberHelpers.number_with_precision(389.32314, {precision: 0})`: `389`
-`NumberHelpers.number_with_precision(111.2345, {significant: true})`: `111`
-`NumberHelpers.number_with_precision(111.2345, {significant: true, precision: 1})`: `100`
-`NumberHelpers.number_with_precision(389.32314, {significant: true, precision: 4})`: `389.3`
-`NumberHelpers.number_with_precision(13, {significant: true, precision: 5})`: `13.00000`
-`NumberHelpers.number_with_precision(13.00000004, {significant: true, precision: 6})`: `13.000000`
-`NumberHelpers.number_with_precision(1111.2345, {separator: ',', precision: 2, delimiter: '.'})`: `1.111,23`
-`NumberHelpers.number_with_precision(13, {significant: true, precision: 5, strip_insignificant_zeros: true})`: `13`
+- `NumberHelpers.number_with_precision(111.2345)`: `111.235`
+- `NumberHelpers.number_with_precision(111.2345, {precision: 2})`: `111.23`
+- `NumberHelpers.number_with_precision(13, {precision: 5})`: `13.00000`
+- `NumberHelpers.number_with_precision(389.32314, {precision: 0})`: `389`
+- `NumberHelpers.number_with_precision(111.2345, {significant: true})`: `111`
+- `NumberHelpers.number_with_precision(111.2345, {significant: true, precision: 1})`: `100`
+- `NumberHelpers.number_with_precision(389.32314, {significant: true, precision: 4})`: `389.3`
+- `NumberHelpers.number_with_precision(13, {significant: true, precision: 5})`: `13.00000`
+- `NumberHelpers.number_with_precision(13.00000004, {significant: true, precision: 6})`: `13.000000`
+- `NumberHelpers.number_with_precision(1111.2345, {separator: ',', precision: 2, delimiter: '.'})`: `1.111,23`
+- `NumberHelpers.number_with_precision(13, {significant: true, precision: 5, strip_insignificant_zeros: true})`: `13`
 
 
 This project is maintained by [Emcien](https://github.com/emcien).
+
 We are always looking for good engineers -
 [send](mailto:devjobs@emcien.com) us your github profile and resume!
 
