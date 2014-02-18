@@ -55,7 +55,7 @@
     };
 
     NumberHelpers.number_with_precision = function(float, opts) {
-      var decimal, i, integer, multiple, num_array, num_lngth, number, rnd, rounded, significant, sigs, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _separator, _significant, _strip_insignificant_zeros;
+      var decimal, dlen, i, integer, multiple, newlen, num_array, num_lngth, number, rnd, rounded, significant, sigs, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _separator, _significant, _strip_insignificant_zeros;
       if (opts == null) {
         opts = {};
       }
@@ -108,7 +108,16 @@
         delimiter: _delimiter
       });
       if (_strip_insignificant_zeros) {
-        decimal = '';
+        dlen = decimal.length;
+        newlen = dlen;
+        while (newlen > 0 && decimal[newlen - 1] === '0') {
+          newlen = newlen - 1;
+        }
+        if (newlen === 0) {
+          decimal = '';
+        } else if (newlen !== dlen) {
+          decimal = decimal.slice(0, newlen);
+        }
       }
       if (!decimal) {
         _separator = '';
