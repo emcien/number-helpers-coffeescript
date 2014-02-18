@@ -38,4 +38,8 @@ describe("Number To Currency", function() {
     var out = NumberHelpers.number_to_currency(1234567890.50, {unit:"&pound;", separator:",", delimiter:""});
     expect(out).toBe('&pound;1234567890,50');
   });
+  it('allows "after" unit positioning', function() {
+    var out = NumberHelpers.number_to_currency(123.507, {unit: " CZK", unit_position: "end", precision: 2});
+    expect(out).toBe('123.51 CZK');
+  });
 });

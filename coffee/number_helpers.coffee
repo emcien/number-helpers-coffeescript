@@ -4,6 +4,7 @@ class @NumberHelpers
     _unit       = opts.unit ? '$'
     _separator  = opts.separator ? '.'
     _delimiter  = opts.delimiter ? ','
+    _unit_pos   = opts.unit_position ? 'start'
 
     number  = float.toString().split('.')
     integer = number[0]
@@ -22,7 +23,10 @@ class @NumberHelpers
 
     integer = NumberHelpers.number_with_delimiter(integer, {delimiter: _delimiter})
 
-    return "#{_unit}#{integer}#{_separator}#{decimal}"
+    if _unit_pos == 'end'
+      return "#{integer}#{_separator}#{decimal}#{_unit}"
+    else
+      return "#{_unit}#{integer}#{_separator}#{decimal}"
 
   @number_with_delimiter = (float, opts={}) ->
     _separator  = opts.separator ? '.'

@@ -6,7 +6,7 @@
     function NumberHelpers() {}
 
     NumberHelpers.number_to_currency = function(float, opts) {
-      var decimal, integer, number, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _ref4, _separator, _unit;
+      var decimal, integer, number, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _separator, _unit, _unit_pos;
       if (opts == null) {
         opts = {};
       }
@@ -14,12 +14,13 @@
       _unit = (_ref1 = opts.unit) != null ? _ref1 : '$';
       _separator = (_ref2 = opts.separator) != null ? _ref2 : '.';
       _delimiter = (_ref3 = opts.delimiter) != null ? _ref3 : ',';
+      _unit_pos = (_ref4 = opts.unit_position) != null ? _ref4 : 'start';
       number = float.toString().split('.');
       integer = number[0];
       decimal = number[1];
       decimal = parseFloat("0." + decimal).toFixed(_precision);
       decimal = decimal.toString().split('.');
-      decimal = (_ref4 = decimal[1]) != null ? _ref4 : '';
+      decimal = (_ref5 = decimal[1]) != null ? _ref5 : '';
       if (!decimal) {
         _separator = '';
       }
@@ -29,7 +30,11 @@
       integer = NumberHelpers.number_with_delimiter(integer, {
         delimiter: _delimiter
       });
-      return "" + _unit + integer + _separator + decimal;
+      if (_unit_pos === 'end') {
+        return "" + integer + _separator + decimal + _unit;
+      } else {
+        return "" + _unit + integer + _separator + decimal;
+      }
     };
 
     NumberHelpers.number_with_delimiter = function(float, opts) {
