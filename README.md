@@ -1,3 +1,5 @@
+(A better formatted version of this documentation can
+be viewed [here](http://emcien.github.com/number-helpers-coffeescript))
 
 ## Background
 
