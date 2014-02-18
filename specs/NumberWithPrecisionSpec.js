@@ -40,7 +40,15 @@ describe("Number With Precision", function() {
     expect(out).toBe('1.111,23');
   });
   it('strip_insignificant_zeros', function() {
-    var out = NumberHelpers.number_with_precision(13, {significant: true, precision: 5, strip_insignificant_zeros: true});
+    var out = NumberHelpers.number_with_precision(13.0, {significant: true, precision: 5, strip_insignificant_zeros: true});
     expect(out).toBe('13');
+  });
+  it('leaves_significant_zeros', function() {
+    var out = NumberHelpers.number_with_precision(130.0, {significant: true, precision: 5, strip_insignificant_zeros: true});
+    expect(out).toBe('130');
+  });
+  it('strips out insignificant zeroes after nonzero digits', function() {
+    var out = NumberHelpers.number_with_precision(13.01000, {significant: true, precision: 5, strip_insignificant_zeros: true});
+    expect(out).toBe('13.01');
   });
 });
