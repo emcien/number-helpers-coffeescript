@@ -6,22 +6,29 @@ class @NumberHelpers
     _delimiter  = opts.delimiter ? ','
     _unit_pos   = opts.unit_position ? 'start'
 
-    number  = float.toString().split('.')
-    integer = number[0]
-    decimal = number[1]
-
-    # Pad to _precision
-    decimal = parseFloat("0.#{decimal}").toFixed(_precision)
-    decimal = decimal.toString().split('.')
-    decimal = decimal[1] ? ''
-
-    # Remove separator if no decimal
-    _separator = '' unless decimal
-
     # Non-number values return zero precision
-    _separator = decimal = '' if isNaN(integer)
+    if isNaN(float)
+      integer = float
+      _separator = decimal = ''
+    else
+      number  = float.toString().split('.')
+      integer = parseInt(number[0], 10)
+      decimal = number[1]
 
-    integer = NumberHelpers.number_with_delimiter(integer, {delimiter: _delimiter})
+      # Pad to _precision
+      decimal = parseFloat("0.#{decimal}").toFixed(_precision)
+      decimal = decimal.toString().split('.')
+
+      carry = parseInt(decimal[0], 10)
+      integer += carry if carry
+
+      decimal = decimal[1] ? ''
+
+      # Remove separator if no decimal
+      _separator = '' unless decimal
+
+
+      integer = NumberHelpers.number_with_delimiter(integer, {delimiter: _delimiter})
 
     if _unit_pos == 'end'
       return "#{integer}#{_separator}#{decimal}#{_unit}"
