@@ -14,9 +14,25 @@ describe("Number To Currency", function() {
     var out = NumberHelpers.number_to_currency(1234567890.506);
     expect(out).toBe('$1,234,567,890.51');
   });
+  it('Simple rounding Up With 9s Precision 0', function() {
+    var out = NumberHelpers.number_to_currency(2.99, {precision: 0});
+    expect(out).toBe('$3');
+  });
+  it('Simple Precision 2 with 9s', function() {
+    var out = NumberHelpers.number_to_currency(2.99, {precision: 2});
+    expect(out).toBe('$2.99');
+  });
+  it('Rounding Up With 9s Precision 0', function() {
+    var out = NumberHelpers.number_to_currency(1234567890.99, {precision: 0});
+    expect(out).toBe('$1,234,567,891');
+  });
+  it('Rounding Up With 9s Precision 2', function() {
+    var out = NumberHelpers.number_to_currency(1234567890.99, {precision: 2});
+    expect(out).toBe('$1,234,567,890.99');
+  });
   it('Precision 0', function() {
     var out = NumberHelpers.number_to_currency(1234567890.506, {precision: 0});
-    expect(out).toBe('$1,234,567,890');
+    expect(out).toBe('$1,234,567,891');
   });
   it('Precision 1', function() {
     var out = NumberHelpers.number_to_currency(1234567890.506, {precision: 1});
