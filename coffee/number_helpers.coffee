@@ -6,34 +6,22 @@ class @NumberHelpers
     _delimiter  = opts.delimiter ? ','
     _unit_pos   = opts.unit_position ? 'start'
 
+    sign = ''
+
     # Non-number values return zero precision
     if isNaN(float)
-      integer = float
-      _separator = decimal = ''
+      result = float
     else
-      number  = float.toString().split('.')
-      integer = parseInt(number[0], 10)
-      decimal = number[1]
-
-      # Pad to _precision
-      decimal = parseFloat("0.#{decimal}").toFixed(_precision)
-      decimal = decimal.toString().split('.')
-
-      carry = parseInt(decimal[0], 10)
-      integer += carry if carry
-
-      decimal = decimal[1] ? ''
-
-      # Remove separator if no decimal
-      _separator = '' unless decimal
-
-
-      integer = NumberHelpers.number_with_delimiter(integer, {delimiter: _delimiter})
+      float = parseFloat(float) # Arg might be a string, integer
+      sign = '-' if float < 0
+      fixedWidth = Math.abs(float).toFixed(_precision)
+      delimited = NumberHelpers.number_with_delimiter(fixedWidth, {delimiter: _delimiter})
+      result = delimited.split('.').join(_separator)
 
     if _unit_pos == 'end'
-      return "#{integer}#{_separator}#{decimal}#{_unit}"
+      return "#{sign}#{result}#{_unit}"
     else
-      return "#{_unit}#{integer}#{_separator}#{decimal}"
+      return "#{sign}#{_unit}#{result}"
 
   @number_with_delimiter = (float, opts={}) ->
     _separator  = opts.separator ? '.'
@@ -47,7 +35,7 @@ class @NumberHelpers
     _separator = '' unless decimal
 
     rgx = /(\d+)(\d{3})/
-    integer = integer .replace(rgx, "$1" + _delimiter + "$2") while rgx.test(integer) if _delimiter
+    integer = integer.replace(rgx, "$1" + _delimiter + "$2") while rgx.test(integer) if _delimiter
 
     return "#{integer}#{_separator}#{decimal}"
 
