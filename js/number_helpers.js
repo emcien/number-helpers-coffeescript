@@ -4,7 +4,7 @@
     function NumberHelpers() {}
 
     NumberHelpers.number_to_currency = function(float, opts) {
-      var carry, decimal, integer, number, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _separator, _unit, _unit_pos;
+      var delimited, fixedWidth, result, sign, _delimiter, _precision, _ref, _ref1, _ref2, _ref3, _ref4, _separator, _unit, _unit_pos;
       if (opts == null) {
         opts = {};
       }
@@ -13,31 +13,24 @@
       _separator = (_ref2 = opts.separator) != null ? _ref2 : '.';
       _delimiter = (_ref3 = opts.delimiter) != null ? _ref3 : ',';
       _unit_pos = (_ref4 = opts.unit_position) != null ? _ref4 : 'start';
+      sign = '';
       if (isNaN(float)) {
-        integer = float;
-        _separator = decimal = '';
+        result = float;
       } else {
-        number = float.toString().split('.');
-        integer = parseInt(number[0], 10);
-        decimal = number[1];
-        decimal = parseFloat("0." + decimal).toFixed(_precision);
-        decimal = decimal.toString().split('.');
-        carry = parseInt(decimal[0], 10);
-        if (carry) {
-          integer += carry;
+        float = parseFloat(float);
+        if (float < 0) {
+          sign = '-';
         }
-        decimal = (_ref5 = decimal[1]) != null ? _ref5 : '';
-        if (!decimal) {
-          _separator = '';
-        }
-        integer = NumberHelpers.number_with_delimiter(integer, {
+        fixedWidth = Math.abs(float).toFixed(_precision);
+        delimited = NumberHelpers.number_with_delimiter(fixedWidth, {
           delimiter: _delimiter
         });
+        result = delimited.split('.').join(_separator);
       }
       if (_unit_pos === 'end') {
-        return "" + integer + _separator + decimal + _unit;
+        return "" + sign + result + _unit;
       } else {
-        return "" + _unit + integer + _separator + decimal;
+        return "" + sign + _unit + result;
       }
     };
 

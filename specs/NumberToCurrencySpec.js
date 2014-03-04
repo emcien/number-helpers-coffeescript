@@ -10,6 +10,18 @@ describe("Number To Currency", function() {
     var out = NumberHelpers.number_to_currency('1234567890.50');
     expect(out).toBe('$1,234,567,890.50');
   });
+  it('Negative number', function() {
+    var out = NumberHelpers.number_to_currency(-2.99, {precision: 0});
+    expect(out).toBe('-$3');
+  });
+  it('Negative number with precision rounding', function() {
+    var out = NumberHelpers.number_to_currency(-2.999, {precision: 2});
+    expect(out).toBe('-$3.00');
+  });
+  it('Negative number with precision', function() {
+    var out = NumberHelpers.number_to_currency(-2.503, {precision: 2});
+    expect(out).toBe('-$2.50');
+  });
   it('Rounding Up', function() {
     var out = NumberHelpers.number_to_currency(1234567890.506);
     expect(out).toBe('$1,234,567,890.51');
