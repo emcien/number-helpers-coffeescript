@@ -51,4 +51,18 @@ describe("Number With Precision", function() {
     var out = NumberHelpers.number_with_precision(13.01000, {significant: true, precision: 5, strip_insignificant_zeros: true});
     expect(out).toBe('13.01');
   });
+  it('can strip insignificant decimal parts if requested', function() {
+    var a = NumberHelpers.number_with_precision(13.010, { strip_empty_fractional_parts: true });
+    expect(a).toBe('13.010');
+
+    var b = NumberHelpers.number_with_precision(13.000, { strip_empty_fractional_parts: true });
+    expect(b).toBe('13');
+
+    var c = NumberHelpers.number_with_precision(13.000, { strip_empty_fractional_parts: true, precision: 4 });
+    expect(c).toBe('13');
+
+    var d = NumberHelpers.number_with_precision(13.000001, { strip_empty_fractional_parts: true, precision: 4 });
+    expect(d).toBe('13');
+
+  });
 });

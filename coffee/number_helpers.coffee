@@ -45,6 +45,7 @@ class @NumberHelpers
     _separator    = opts.separator ? '.'
     _significant  = opts.significant ? false
     _strip_insignificant_zeros = opts.strip_insignificant_zeros ? false
+    _skip_empty_fractionals = opts.strip_empty_fractional_parts
 
     # Break number into inspectable pieces
     number    = float.toString().split('.')
@@ -110,6 +111,16 @@ class @NumberHelpers
         decimal = ''
       else if newlen != dlen
         decimal = decimal.slice(0, newlen)
+
+    if _skip_empty_fractionals
+      i = 0; zcount = 0
+      num_array = decimal.split('')
+      dlen = decimal.length
+      while i < dlen
+        zcount++ if num_array[i] is '0'
+        i++
+      if zcount == dlen
+        decimal = ''
 
     # Remove separator if no decimal
     _separator = '' unless decimal
