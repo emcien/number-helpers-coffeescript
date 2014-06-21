@@ -62,4 +62,28 @@ describe("Number To Human", function() {
     var out = NumberHelpers.number_to_human(500000000, {precision: 5, strip_insignificant_zeros: true});
     expect(out).toBe('500 Million');
   });
+  it('Custom labels: K', function() {
+    var out = NumberHelpers.number_to_human(1234, {space_label: false, labels:{thousand: 'K'}});
+    expect(out).toBe('1.23K')
+  });
+  it('Custom labels: M', function() {
+    var out = NumberHelpers.number_to_human(1234567, {labels:{million: 'M'}});
+    expect(out).toBe('1.23 M')
+  });
+  it('Custom labels: B', function() {
+    var out = NumberHelpers.number_to_human(1234567890, {space_label: false, labels:{billion: 'B'}});
+    expect(out).toBe('1.23B')
+  });
+  it('Custom labels: T', function() {
+    var out = NumberHelpers.number_to_human(1234567890123, {labels:{trillion: 'T'}});
+    expect(out).toBe('1.23 T')
+  });
+  it('Custom labels: P', function() {
+    var out = NumberHelpers.number_to_human(1234567890123456, {labels:{quadrillion: 'P'}});
+    expect(out).toBe('1.23 P')
+  });
+  it('No label space', function() {
+    var out = NumberHelpers.number_to_human(1234, {space_label: false});
+    expect(out).toBe('1.23Thousand');
+  });
 });

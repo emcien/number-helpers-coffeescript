@@ -133,6 +133,13 @@ class @NumberHelpers
     _significant  = opts.significant  ? true
     _delimiter    = opts.delimiter    ? ','
     _strip_insignificant_zeros = opts.strip_insignificant_zeros ? false
+    _space_label  = if opts.space_label is false then '' else ' '
+    _labels       =
+        thousand: opts.labels?.thousand ? 'Thousand'
+        million: opts.labels?.million ? 'Million'
+        billion: opts.labels?.billion ? 'Billion'
+        trillion: opts.labels?.trillion ? 'Trillion'
+        quadrillion: opts.labels?.quadrillion ? 'Quadrillion'
 
     # Remove the sign of the number for easier comparision
     abs_float = Math.abs(float)
@@ -143,19 +150,19 @@ class @NumberHelpers
       label = false
     else if abs_float >= Math.pow(10, 3) and abs_float < Math.pow(10, 6)
       denom = Math.pow(10, 3)
-      label = 'Thousand'
+      label = _labels.thousand
     else if abs_float >= Math.pow(10, 6) and abs_float < Math.pow(10, 9)
       denom = Math.pow(10, 6)
-      label = 'Million'
+      label = _labels.million
     else if abs_float >= Math.pow(10, 9) and abs_float < Math.pow(10, 12)
       denom = Math.pow(10, 9)
-      label = 'Billion'
+      label = _labels.billion
     else if abs_float >= Math.pow(10, 12) and abs_float < Math.pow(10, 15)
       denom = Math.pow(10, 12)
-      label = 'Trillion'
+      label = _labels.trillion
     else if abs_float >= Math.pow(10, 15)
       denom = Math.pow(10, 15)
-      label = 'Quadrillion'
+      label = _labels.quadrillion
 
     # Process the number into a presentable format
     number  = float / denom
@@ -169,7 +176,7 @@ class @NumberHelpers
 
     #No label needed for less than thousand
     if label
-      return "#{precise} #{label}"
+      return "#{precise}#{_space_label}#{label}"
     else
       return precise
 

@@ -54,11 +54,21 @@ for numbers that can get very large (and too hard to read).
 - `{ precision: 3 }` - Sets the level of precision (defaults to 3).
 - `{ separator: '.' }` - Sets the separator between the units (defaults to ".").
 - `{ delimiter: ',' }` - Sets the thousands delimiter (defaults to ",").
+- `{ space_label: false }` - Omit the space between the value and the label.
+  - If false, then 1234 would be output as 1.23Thousand
 - `{ strip_insignificant_zeros: true}` - If true removes insignificant zeros
   after the decimal separator (defaults to true)
 - `{ significant: true }`
   - If true, precision will be the # of significant_digits.
   - If false, the # of fractional digits (defaults to true)
+- `{ labels: { thousand: 'K', million: 'M' } }`
+  - Customize the label used for the output value.
+  - Possible keys are:
+    - `thousand`
+    - `million`
+    - `billion`
+    - `trillion`
+    - `quadrillion`
 
 *Examples:*
 - `NumberHelpers.number_to_human(123)`: `123`
