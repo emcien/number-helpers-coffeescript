@@ -16,6 +16,14 @@ This library uses the
 as the recipe for all method names, parameters, and test cases. For testing,
 the Jasmine Test Framework implements the same test specs as the Rails code.
 
+## Testing
+
+  * jasmine
+   - Just open the index.html file in your browser
+  * jasmine-node
+   - Install jasmine-node `npm install -g jasmine-node`
+   - Run: `$ jasmine-node specs`
+
 ### Methods:
 
 #### `number_to_currency`

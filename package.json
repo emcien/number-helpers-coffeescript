@@ -1,0 +1,14 @@
+{
+  "name": "number_helpers",
+  "version": "0.1.0",
+  "description": "Rails like number helpers in JS",
+  "author": {
+    "name": "Christopher Altman",
+    "email": "caltman@emcien.com",
+  },
+  "main": "./lib/number_helpers.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emcien/number-helpers-coffeescript.git"
+  }
+}
