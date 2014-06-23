@@ -1,4 +1,4 @@
-class @NumberHelpers
+class NumberHelpers
   @number_to_currency = (float, opts={}) ->
     _precision  = opts.precision ? 2
     _unit       = opts.unit ? '$'
@@ -278,3 +278,8 @@ class @NumberHelpers
       )
 
     return "#{float}%"
+
+if typeof module isnt 'undefined' and typeof module.exports isnt 'undefined'
+  module.exports = NumberHelpers
+else
+  window.NumberHelpers = NumberHelpers
