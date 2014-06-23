@@ -214,6 +214,8 @@ You can customize the format in the options hash.
 - `{ significant: false }`
   - If true, precision will be the # of significant_digits.
   - If false, the # of fractional digits (defaults to false)
+- `{ strip_empty_fractional_parts: false }` - If true, the number will be expressed as an integer
+   if the fractional part is empty (if it rounds to 15.00, only '15' is produced). (defaults to false)
 
 *Examples:*
 - `NumberHelpers.number_with_precision(111.2345)`: `111.235`
