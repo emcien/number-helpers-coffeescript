@@ -279,6 +279,21 @@ class NumberHelpers
 
     return "#{float}%"
 
+  # Round to the precision and then call number to precision
+  @number_to_rounded = (float, opts={}) ->
+    _precision    = opts.precision    ? 3
+   
+    # Rounding based on https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round 
+    #Shift
+    value = float.toString().split('e');
+    value = Math.round(+(value[0] + 'e' + ( if value[1] then  (+value[1] + _precision) else _precision)));
+    # Shift back
+    value = value.toString().split('e');
+    value = +(value[0] + 'e' + ( if value[1] then (+value[1] - _precision) else -_precision));
+    @number_to_precision(value, opts)
+  
+
+
 if typeof module isnt 'undefined' and typeof module.exports isnt 'undefined'
   module.exports = NumberHelpers
 else
