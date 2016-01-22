@@ -1,4 +1,5 @@
 class NumberHelpers
+  @ZEROS = new Array(200).join('0');
   @number_to_currency = (float, opts={}) ->
     _precision  = opts.precision ? 2
     _unit       = opts.unit ? '$'
@@ -39,6 +40,19 @@ class NumberHelpers
 
     return "#{integer}#{_separator}#{decimal}"
 
+  @safe_round = (float, _significant, _precision) ->
+    # Rounding based on https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round 
+    #Shift
+    return float unless float
+    value = (+float).toExponential().toString().split('e');
+    _round = if _significant then (-1 - value[1] + _precision)  else  _precision
+
+    value = Math.round(+(value[0] + 'e' + (+value[1] + _round)));
+    # Shift back
+    value = value.toExponential().toString().split('e');
+    value = +(value[0] + 'e' + ( +value[1] - _round) );
+    
+
   @number_with_precision = (float, opts={}) ->
     _precision    = opts.precision ? 3
     _delimiter    = opts.delimiter ? ','
@@ -46,7 +60,7 @@ class NumberHelpers
     _significant  = opts.significant ? false
     _strip_insignificant_zeros = opts.strip_insignificant_zeros ? false
     _skip_empty_fractionals = opts.strip_empty_fractional_parts
-
+    
     # Break number into inspectable pieces
     number    = float.toString().split('.')
     integer   = number[0]
@@ -64,7 +78,7 @@ class NumberHelpers
     # Round
     multiple  = Math.pow(10, rnd)
     if multiple > 1
-      rounded   = Math.round(float * multiple) / multiple
+      rounded   = @safe_round(float, _significant, _precision)
     else
       rounded = float
 
@@ -73,7 +87,6 @@ class NumberHelpers
     integer   = number[0]
     decimal   = number[1] ? ''
 
-    # Pad to _precision
     decimal = parseFloat("0.#{decimal}").toFixed(_precision)
     decimal = decimal.toString().split('.')
     decimal = decimal[1] ? ''
@@ -96,6 +109,9 @@ class NumberHelpers
       integer     = significant[0]
       decimal     = significant[1] ? ''
 
+
+    
+    
     # Delimiter Integer
     integer = NumberHelpers.number_with_delimiter(integer, {delimiter: _delimiter})
 
@@ -279,18 +295,92 @@ class NumberHelpers
 
     return "#{float}%"
 
-  # Round to the precision and then call number to precision
+  @reconstitute_exponential = (num, exp) ->
+    if num.indexOf('e') != -1
+      vals = num.split('e')
+      num = vals[0]
+      exp = vals[1]  
+    exp = +exp
+    num +=''
+    return num if exp == 0
+    # format is n.nnnnn or n; decimal implied after first digit
+    num = num.replace(/\./,'')
+    numlength = num.length
+    if exp > 0
+      if (exp + 1) < numlength
+        num = num.substr(0,exp+1)+'.'+num.substr(exp+1)
+      else 
+        # no decimal, but we need added zeros
+        num = (num + @ZEROS).substr(0,exp+1)
+    else
+      #smaller, just move the decimal over
+      num = "0."+(@ZEROS + num).substr(@ZEROS.length+1+exp)
+    return num
+
+    
+    
+  # Number to rounded handles singificant digits differently than number_with_precision
   @number_to_rounded = (float, opts={}) ->
     _precision    = opts.precision    ? 3
+    _significant = opts.significant  ? false
+    # Be consistent with Ruby implementation
+    _delimiter = opts.delimiter ? ''
+    _separator    = opts.separator ? '.'
+    _strip_insignificant_zeros = opts.strip_insignificant_zeros ? false
+    _skip_empty_fractionals = opts.strip_empty_fractional_parts
+    # Zero precision with significant is a mistake (would always return zero),
+    # so we treat it as if significant was false (increases backwards compatibility for number_to_human_size)
+
+    if _significant && !_precision
+      _significant = false
+
+    rounded = @safe_round(float, _significant, _precision) 
+
+    if _significant && _precision
+      value = rounded.toExponential().split('e');
+      significant_val = (+value[0]).toFixed(_precision-1)
+      rounded = @reconstitute_exponential(significant_val,value[1])
+
+    else if _precision
+      # Break number into inspectable pieces
+      rounded    = rounded.toFixed(_precision)
    
-    # Rounding based on https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round 
-    #Shift
-    value = float.toString().split('e');
-    value = Math.round(+(value[0] + 'e' + ( if value[1] then  (+value[1] + _precision) else _precision)));
-    # Shift back
-    value = value.toString().split('e');
-    value = +(value[0] + 'e' + ( if value[1] then (+value[1] - _precision) else -_precision));
-    @number_to_precision(value, opts)
+    rounded +='' 
+    number    = rounded.split('.')
+    integer   = number[0]
+    decimal   = number[1] ? ''
+
+    # Delimiter Integer
+    integer = NumberHelpers.number_with_delimiter(integer, {delimiter: _delimiter})
+
+    # Strip Insignificant Digits
+    if _strip_insignificant_zeros
+      dlen = decimal.length
+      newlen = dlen
+
+      while newlen > 0 and decimal[newlen - 1] == '0'
+        newlen = newlen - 1
+
+      if newlen == 0
+        decimal = ''
+      else if newlen != dlen
+        decimal = decimal.slice(0, newlen)
+
+    if _skip_empty_fractionals
+      i = 0; zcount = 0
+      num_array = decimal.split('')
+      dlen = decimal.length
+      while i < dlen
+        zcount++ if num_array[i] is '0'
+        i++
+      if zcount == dlen
+        decimal = ''
+
+    # Remove separator if no decimal
+    _separator = '' unless decimal
+
+    return "#{integer}#{_separator}#{decimal}"
+
   
 
 
